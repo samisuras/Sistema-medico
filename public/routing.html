@@ -72,8 +72,9 @@
                     <li><a href="#!inicio" ng-click="mostrar()" onclick="regresar();">Inicio</a></li>
                     <li><a href="#contact" ng-show="variable">Contactanos</a></li>
                     <li><a href="#services" ng-show="variable">Servicos</a></li>
-                    <li ><a ng-if="usuario == 'null' || usuario == null" href="#!Login" ng-click="ocultar()">Iniciar Sesión</a></li>
-                    <li ><a ng-if="usuario != 'null' || usuario != null" href="#">{{usuario}}</a></li>
+                    <li ><a ng-if="!usuario" href="#!Login" ng-click="ocultar()">Iniciar Sesión</a></li>
+                    <li ng-if="usuario"><a href="#">Bienvenido: {{usuario}}</a></li>
+                    <li ng-if="usuario"><a href="#" ng-click="cerrarSesion()">Cerrar Sesion</a></li>
                 </ul>
             </nav><!-- #nav-menu-container -->
         </div>

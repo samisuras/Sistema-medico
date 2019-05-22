@@ -7,11 +7,12 @@ router.get('/',(req,res) => {
     res.sendfile('./public/routing.html');
 });
 router.post('/addUser',async (req,res)=>{
-    existeUs = await addUser(req,res);
+    console.log(req.body);
+    /*existeUs = await addUser(req,res);
     if(!existeUs)
     {
         agregarRol(req);
-    } 
+    } */
 });
 router.post('/addPac',(req,res)=>{
     addPac(req);

@@ -32,6 +32,10 @@ app.controller('indexController', function ($scope) {
     $scope.privilegio = sessionStorage.getItem('privilegio');
     sessionStorage.setItem('rol',"");
     $scope.rol = sessionStorage.getItem('rol');
+    $scope.cerrarSesion = function(){
+        sessionStorage.clear();
+        window.location.href = "/";
+    };
 
     $scope.variable = false;
     $scope.mostrar = function () {
@@ -135,7 +139,7 @@ app.controller('indexController', function ($scope) {
 
 });
 
-app.controller('formController', function ($scope) {
+app.controller('formController', function ($scope,$http) {
 
     $scope.opciones = [
         { value: 0, name: 'Medico' },
@@ -143,7 +147,40 @@ app.controller('formController', function ($scope) {
     ]
     $scope.selectOption = {};
 
-
+    $scope.registroTrabajador = function(){
+        if($scope.selectOption == 0)
+        {
+            var data ={
+                nombre: $scope.nombre,
+                apellidos: $scope.apellidos,
+                usuario: $scope.usuario,
+                rol: 0,
+                especialidad: document.getElementById('especialidad').value,
+                cedula: document.getElementById('cedula').value,
+                correo: $scope.correo,
+                contra: $scope.contrasena
+            };
+        }else{
+            var data ={
+                nombre: $scope.nombre,
+                apellidos: $scope.apellidos,
+                usuario: $scope.usuario,
+                rol: 1,
+                cedula: document.getElementById('cedula2').value,
+                correo: $scope.correo,
+                contra: $scope.contrasena
+            };
+        }
+        $http.post('/addUser',data)
+        .then(
+            function(response){
+                //Todo bien
+        },
+        function(response){
+            $scope.error = true;
+            $scope.mensajeError = response.data.message;
+        });
+    };
 });
 
 app.controller('loginController', function ($scope,$http) {
