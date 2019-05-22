@@ -21,7 +21,7 @@ router.post('/loginUser', async (req,res)=>{
     var error = await confirmarLogin(req);
     if(error){
         res.status(400).send({
-            message: "error en la contrasena"
+            message: "Error en Usuario y/o Contrasena"
         });
     }else{
         res.send({
