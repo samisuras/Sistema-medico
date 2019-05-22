@@ -14,8 +14,8 @@ app.config(function ($routeProvider) {
             templateUrl: 'pages/inicio.html',
             controller: 'indexController'
         })
-        .when('/login',{
-            templateUrl: 'pages/login.html',
+        .when('/Login', {
+            templateUrl: 'pages/Login.html',
             controller: 'loginController'
         })
         .otherwise({
@@ -26,11 +26,21 @@ app.config(function ($routeProvider) {
 });
 
 app.controller('indexController', function ($scope) {
+
     //SESION
     $scope.usuario = sessionStorage.getItem('usuario');
     $scope.privilegio = sessionStorage.getItem('privilegio');
     sessionStorage.setItem('rol',"");
     $scope.rol = sessionStorage.getItem('rol');
+
+    $scope.variable = false;
+    $scope.mostrar = function () {
+        $scope.variable = true;
+    };
+
+    $scope.ocultar = function () {
+        $scope.variable = false;
+    };
 
     $scope.telcontacto = '+52 496 118 5457';
     $scope.subTitulo4 = 'Contactanos';
@@ -122,6 +132,7 @@ app.controller('indexController', function ($scope) {
     ];
 
 
+
 });
 
 app.controller('formController', function ($scope) {
@@ -131,9 +142,11 @@ app.controller('formController', function ($scope) {
         { value: 1, name: 'Enfermera' },
     ]
     $scope.selectOption = {};
+
+
 });
 
-app.controller('loginController', function($scope,$http) {
+app.controller('loginController', function ($scope,$http) {
     $scope.login = function() {
         var data = {
             user: $scope.usuario,
@@ -157,3 +170,5 @@ app.controller('loginController', function($scope,$http) {
         );
     }
 });
+
+

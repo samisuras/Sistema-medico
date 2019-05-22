@@ -1,42 +1,61 @@
-<div class="container pb-3">
-    <div class="col-sm-12 mt-5">
-        <div align="center">
-            <h1 class="wow fadeInUp">
-                <spam>Inicia Sesión</spam>
-            </h1>
-        </div>
-        <div align="center">
-            <h1 ng-if="error == true">Usuario y/o contraseña incorrectos</h1>
-        </div>
-        <form>
-            <div class="row ml-5 mr-5">
-                <div class="col-md-6">
-                    <img src="../img/medico.jpg" class="" alt="" width="100%">
-                </div>
-                <div class="col-md-6 p-4">
-                    <label for="nombre">Usuario</label>
-                    <div class="input-group flex-nowrap mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text bg-light" id="addon-wrapping"><i
-                                    class="fas fa-user"></i></span>
-                        </div>
-                        <input ng-model="usuario" type="text" class="form-control" name="usuario" id="usuario" placeholder="Juan_Samuel"
-                            required>
-                    </div>
-                    <label for="contrasena">Contraseña</label>
-                    <div class="input-group flex-nowrap mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text bg-light" id="addon-wrapping"><i
-                                    class="fas fa-key"></i></span>
-                        </div>
-                        <input ng-model="contra" type="password" class="form-control" name="contrasena" id="contrasena"
-                            placeholder="*******" required>
-                    </div>
-                    <div class="col-sm-12" align="center">
-                        <button ng-click="login()" class="btn btn-dark btn-lg mt-3">Registrar</button>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+
+<link rel="stylesheet" type="text/css" href="css/loginutil.css">
+<link rel="stylesheet" type="text/css" href="css/login.css">
+<!--===============================================================================================-->
+</head>
+<body>
+	
+	<div class="limiter">
+		<div class="container-login100 wow fadeInUp">
+			<div class="wrap-login100">
+				<div class="login100-form-title" style="background-image: url(img/bg-01.jpg);">
+					<span class="login100-form-title-1">
+							Inicio de Sesión
+					</span>
+				</div>
+
+				<div ng-if="error = true" align="true">
+					<h1>{{mensajeError}}</h1>
+				</div>
+
+				<form class="login100-form validate-form">
+					<div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
+						<span class="">Usuario:</span>
+						<input ng-model="usuario" class="input100 pl-5" type="text" name="username" placeholder="Ingresa Usuario">
+						<span class="focus-input100 pl-5"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input m-b-18" data-validate = "Password is required">
+						<span class="">Contraseña: </span>
+						<input ng-model="contra" class="input100 pl-5" type="password" name="pass" placeholder="Ingresa Contraseña">
+						<span class="focus-input100 pl-5"></span>
+					</div>
+
+					<div class="flex-sb-m w-full p-b-30 pt-3">
+						<div>
+							<a href="#" class="txt1">
+								¿Olvidaste tu contraseña?
+							</a>
+						</div>
+					</div>
+
+					<div class="container-login100-form-btn pt-2">
+						<button ng-click="login()" class="login100-form-btn text-right">
+							Iniciar
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script src="js/login.js"></script>
+
+</body>
+</html>

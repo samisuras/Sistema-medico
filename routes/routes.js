@@ -4,7 +4,7 @@ const mail = require('../server/mails');
 
 //RUTAS
 router.get('/',(req,res) => {
-    res.sendfile('./public/index.html');
+    res.sendfile('./public/routing.html');
 });
 router.post('/addUser',async (req,res)=>{
     existeUs = await addUser(req,res);
