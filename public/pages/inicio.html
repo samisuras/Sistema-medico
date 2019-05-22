@@ -1,0 +1,176 @@
+
+
+<main id="main">
+
+  <section id="about" class="wow fadeInUp">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 about-img">
+          <img src="img/about-img.jpg" alt="">
+        </div>
+
+        <div class="col-lg-6 content">
+          <h2>{{subTitulo1}}</h2>
+          <h3>{{textoSub1}}</h3>
+
+          <ul ng-repeat="datos in beneficios">
+            <li><i class="ion-android-checkmark-circle"></i>{{datos.beneficio}}</li>
+          </ul>
+
+        </div>
+      </div>
+
+    </div>
+  </section><!-- #about -->
+
+  <section id="services">
+    <div class="container">
+      <div class="section-header">
+        <h2>Servicios</h2>
+        <p></p>
+      </div>
+
+      <div class="row">
+
+        <div class="col-lg-6" ng-repeat="datos in servicios">
+          <div class="{{datos.fade}}" "{{datos.delay}}">
+            <div class="icon"><i class="{{datos.icono}}"></i></div>
+            <h4 class="title"><a href="">{{datos.titulo}}</a></h4>
+            <p class="description">{{datos.descripcion}}</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section><!-- #services -->
+
+
+  <section id="portfolio" class="wow fadeInUp">
+    <div class="container">
+      <div class="section-header">
+        <h2>{{subTitulo2}}</h2>
+        <p>{{textoSub2}}</p>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row no-gutters">
+        <div class="col-lg-3 col-md-4" ng-repeat="datos in consultorios">
+          <div class="portfolio-item wow fadeInUp">
+            <a href="{{datos.imagen}}" class="portfolio-popup">
+              <img src="{{datos.imagen}}" alt="">
+              <div class="portfolio-overlay">
+                <div class="portfolio-info">
+                  <h2 class="wow fadeInUp">{{datos.titulo}}</h2>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <section id="team" class="wow fadeInUp">
+    <div class="container">
+      <div class="section-header">
+        <h2>{{subTitulo3}}</h2>
+      </div>
+      <div class="row">
+        <div class="col-lg-3 col-md-6" ng-repeat="datos in equipo">
+          <div class="member">
+            <div class="pic"><img src="{{datos.imagen}}" alt=""></div>
+            <div class="details">
+              <h4>{{datos.nombre}}</h4>
+              <span>{{datos.area}}</span>
+              <div class="social">
+                <a href=""><i class="fa fa-twitter"></i></a>
+                <a href=""><i class="fa fa-facebook"></i></a>
+                <a href=""><i class="fa fa-google-plus"></i></a>
+                <a href=""><i class="fa fa-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </section>
+
+  <section id="contact" class="wow fadeInUp">
+    <div class="container">
+      <div class="section-header">
+        <h2>{{subTitulo4}}</h2>
+        <p>{{textoSub4}}</p>
+      </div>
+
+      <div class="row contact-info">
+
+        <div class="col-md-4">
+          <div class="contact-address">
+            <i class="ion-ios-location-outline"></i>
+            <h3>Dirección</h3>
+            <address>Av. Universidad. UAA</address>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="contact-phone">
+            <i class="ion-ios-telephone-outline"></i>
+            <h3>Telefono</h3>
+            <p><a href="">+52 496-118-54-57</a></p>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="contact-email">
+            <i class="ion-ios-email-outline"></i>
+            <h3>Email</h3>
+            <p><a href="#">Juan100_americ@hotmail.com</a></p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="container mb-4">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!4v1558060896256!6m8!1m7!1sRVXyC2HETQ5EelKf-dvO4w!2m2!1d21.91372205875513!2d-102.3129855311191!3f207.7785440148296!4f0.689941272153419!5f0.7820865974627469"
+        width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+    </div>
+
+    <div class="container">
+      <div class="form">
+        <div id="sendmessage">Tu mensaje ha sido enviado, gracias!</div>
+        <div id="errormessage"></div>
+        <form action="" method="post" role="form" class="contactForm">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <input type="text" name="name" class="form-control" id="name" placeholder="Nombre" data-rule="minlen:4"
+                data-msg="Please enter at least 4 chars" />
+              <div class="validation"></div>
+            </div>
+            <div class="form-group col-md-6">
+              <input type="email" class="form-control" name="email" id="email" placeholder="Email" data-rule="email"
+                data-msg="Please enter a valid email" />
+              <div class="validation"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" name="asunto" id="asunto" placeholder="Asunto" data-rule="minlen:4"
+              data-msg="Please enter at least 8 chars of subject" />
+            <div class="validation"></div>
+          </div>
+          <div class="form-group">
+            <textarea class="form-control" name="message" rows="5" data-rule="required"
+              data-msg="Please write something for us" placeholder="Mensaje"></textarea>
+            <div class="validation"></div>
+          </div>
+          <div class="text-center"><button type="submit">Enviar Mensaje</button></div>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+</main>
