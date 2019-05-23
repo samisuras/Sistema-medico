@@ -32,25 +32,40 @@ router.post('/addPac',async (req,res)=>{
     });
 });
 router.post('/loginUser', async (req,res)=>{
-    var error = await confirmarLogin(req);
-    if(error){
-        res.status(400).send({
-            message: "Error en Usuario y/o Contrasena"
-        });
+    var activado = await cuentaActivada(req);
+    if(activado){
+        var error = await confirmarLogin(req);
+        if(error){
+            res.status(400).send({
+                message: "Error en Usuario y/o Contrasena"
+            });
+        }else{
+            var medico = await pool.query("SELECT * FROM medico WHERE nombreUsuario = '"+req.body.user+"' ");
+            var enfermera = await pool.query("SELECT * FROM enfermera WHERE nombreUsuario = '"+req.body.user+"' ");
+            if((medico.length+enfermera.length) == 1)
+                res.send({
+                    privilegio: 2
+                });
+            else
+                res.send({
+                    privilegio: 0
+                });
+        }
     }else{
-        var medico = await pool.query("SELECT * FROM medico WHERE nombreUsuario = '"+req.body.user+"' ");
-        var enfermera = await pool.query("SELECT * FROM enfermera WHERE nombreUsuario = '"+req.body.user+"' ");
-        if((medico.length+enfermera.length) == 1)
-            res.send({
-                privilegio: 2
-            });
-        else
-            res.send({
-                privilegio: 0
-            });
+        res.status(400).send({
+            message: "La cuenta no ha sido activada\nCheca tu correo"
+        });
     }
 });
 //FUNCIONES
+async function cuentaActivada(req){
+    var query = "SELECT * FROM usuario WHERE nombreUsuario = '"+req.body.user+"'";
+    var res = await pool.query(query);
+    if(res[0].verificado == 1)
+        return true;
+    else
+        return false;
+};
 async function verificar(usuario)
 {
     query = "UPDATE usuario SET verificado = 1 WHERE nombreUsuario = '"+usuario+"'";
