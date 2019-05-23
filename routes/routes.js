@@ -95,10 +95,10 @@ async function agregarRol(req)
     {
         var especialidad = req.body.especialidad;
         var query = "INSERT INTO medico VALUES('"+cedula+"','"+especialidad+"','"+usuario+"')";
-        enviarCorreo(req.body.correo,req);
     }else{
         var query = "INSERT INTO enfermera VALUES('"+cedula+"','"+usuario+"')";
     }
+    enviarCorreo(req.body.correo,req);
     pool.query(query);
 }
 function enviarCorreo(correo,req) {

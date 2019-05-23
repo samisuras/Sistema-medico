@@ -173,11 +173,8 @@ app.controller('formController', function ($scope,$http) {
         $http.post('/addUser',data)
         .then(
             function(response){
-                //Todo bien
-                alert('Todo bien');
         },
         function(response){
-            alert('Error');
             $scope.error = true;
             $scope.mensajeError = response.data.message;
         });
