@@ -26,7 +26,6 @@ app.config(function ($routeProvider) {
 });
 
 app.controller('indexController', function ($scope) {
-
     //SESION
     $scope.usuario = sessionStorage.getItem('usuario');
     $scope.privilegio = sessionStorage.getItem('privilegio');
@@ -175,8 +174,10 @@ app.controller('formController', function ($scope,$http) {
         .then(
             function(response){
                 //Todo bien
+                alert('Todo bien');
         },
         function(response){
+            alert('Error');
             $scope.error = true;
             $scope.mensajeError = response.data.message;
         });

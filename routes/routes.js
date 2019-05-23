@@ -1,18 +1,28 @@
 const router = require('express').Router();
 const pool = require('../db/conection');
 const mail = require('../server/mails');
-
+const path = require('path');
 //RUTAS
 router.get('/',(req,res) => {
     res.sendfile('./public/routing.html');
 });
+router.get('/verificar/:user', async(req,res)=>{
+    await verificar(req.params.user);
+    res.sendfile('./public/pages/verificado.html');
+});
 router.post('/addUser',async (req,res)=>{
-    console.log(req.body);
-    /*existeUs = await addUser(req,res);
+    existeUs = await addUser(req,res);
     if(!existeUs)
     {
-        agregarRol(req);
-    } */
+        await agregarRol(req);
+        res.send({
+            message: "Todo bien"
+        });
+    }else{
+        res.status(402).send({
+            message: "Usuario y/o correo ya registrados"
+        });
+    }
 });
 router.post('/addPac',(req,res)=>{
     addPac(req);
@@ -31,6 +41,11 @@ router.post('/loginUser', async (req,res)=>{
     }
 });
 //FUNCIONES
+async function verificar(usuario)
+{
+    query = "UPDATE usuario SET verificado = 1 WHERE nombreUsuario = '"+usuario+"'";
+    await pool.query(query);
+}
 async function confirmarLogin(req){
     var query ="SELECT * FROM usuario WHERE nombreUsuario='"+req.body.user+"' AND password='"+req.body.contra+"'";
     var res = await pool.query(query);
@@ -54,46 +69,44 @@ async function addUser(req,res)
         if(existeUs === true)
         {
             console.log('El usuario ya ha sido registrado');
-            res.redirect('/test/formulario.html'); 
-            return false;
+            return true;
         }
         var existeCor= await existeCorreo(req); 
         if(existeCor === true)
         {
             console.log('El correo ya ha sido registrado');
-            res.redirect('/test/formulario.html');
-            return false;
+            return true;
         }else{
             await agregarUsuario(req);
-            res.redirect('/');
+            return false;
         }
     }
     catch(e){
         console.log(e);
-        return;
+        return false;
     }
 }
 async function agregarRol(req)
 {
     var rol = req.body.rol;
     var cedula = req.body.cedula;
-    var especialidad = req.body.especialidad;
     var usuario = req.body.usuario;
-    if(rol === 'medico')
+    if(rol === 0)
     {
+        var especialidad = req.body.especialidad;
         var query = "INSERT INTO medico VALUES('"+cedula+"','"+especialidad+"','"+usuario+"')";
-        enviarCorreo(req.body.correo);
+        enviarCorreo(req.body.correo,req);
     }else{
         var query = "INSERT INTO enfermera VALUES('"+cedula+"','"+usuario+"')";
     }
     pool.query(query);
 }
-function enviarCorreo(correo) {
+function enviarCorreo(correo,req) {
     var mailOptions = {
         from: 'globalmedictest@gmail.com',
         to: correo,
         subject: 'Confirmacion de Cuenta',
-        html: '<p>Verifique su cuenta en el siguiente link: </p><a href="http://localhost:3000/">Verificar</a>'
+        html: '<p>Verifique su cuenta en el siguiente link: </p><a href="http://localhost:3000/verificar/'+req.body.usuario+'">Verificar</a>'
     }
     mail.sendMail(mailOptions, (error,info)=>{
         if(error)
@@ -138,11 +151,11 @@ async function agregarUsuario(req) {
     var apellidos = req.body.apellidos;
     var correo = req.body.correo;
     var usuario = req.body.usuario;
-    var contrasena = req.body.contrasena;
+    var contrasena = req.body.contra;
 
-    var query = "INSERT INTO usuario VALUES('"+usuario+"','"+correo+"','"+contrasena+"','"+nombre+"','"+apellidos+"',0)";
+    var query = "INSERT INTO usuario VALUES('"+usuario+"','"+correo+"','"+contrasena+"','"+nombre+"','"+apellidos+"',2,0)";
     try{
-        var res = pool.query(query);
+        pool.query(query);
     }catch(e)
     {
         console.log(e);
