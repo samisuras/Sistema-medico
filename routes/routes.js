@@ -24,9 +24,12 @@ router.post('/addUser',async (req,res)=>{
         });
     }
 });
-router.post('/addPac',(req,res)=>{
-    addPac(req);
-    addUser(req,res);
+router.post('/addPac',async (req,res)=>{
+    await addExConsulta(req);
+    //addUser(req,res);
+    res.send({
+        message: "Expediente de consulta realizado"
+    });
 });
 router.post('/loginUser', async (req,res)=>{
     var error = await confirmarLogin(req);
@@ -35,9 +38,16 @@ router.post('/loginUser', async (req,res)=>{
             message: "Error en Usuario y/o Contrasena"
         });
     }else{
-        res.send({
-            message: "todo bien"
-        });
+        var medico = await pool.query("SELECT * FROM medico WHERE nombreUsuario = '"+req.body.user+"' ");
+        var enfermera = await pool.query("SELECT * FROM enfermera WHERE nombreUsuario = '"+req.body.user+"' ");
+        if((medico.length+enfermera.length) == 1)
+            res.send({
+                privilegio: 2
+            });
+        else
+            res.send({
+                privilegio: 0
+            });
     }
 });
 //FUNCIONES
@@ -54,9 +64,19 @@ async function confirmarLogin(req){
     else
         return true;
 }
-async function addPac(req){
+async function addExConsulta(req){
     try{
-        
+        var usuario = req.body.nombre;
+        var sangre = req.body.sangre;
+        var pulso = req.body.pulso;
+        var talla = req.body.talla;
+        var temperatura = req.body.temperatura;
+        var alergias = req.body.alergias;
+        var peso = req.body.peso;
+        var presion = req.body.presion;
+        var malestares = req.body.malestares;
+        var query = "INSERT INTO expediente_consulta (nombreUsuario,fecha,tipoSangre,alergias,malestar,peso,talla,temperatura,presionArterial,pulsoCardiaco) VALUES ('"+usuario+"',NOW(),'"+sangre+"','"+alergias+"','"+malestares+"',"+peso+","+talla+","+temperatura+","+presion+","+pulso+");";
+        pool.query(query);
     } catch(e){
         console.log(e);
         return;
@@ -96,7 +116,7 @@ async function agregarRol(req)
         var especialidad = req.body.especialidad;
         var query = "INSERT INTO medico VALUES('"+cedula+"','"+especialidad+"','"+usuario+"')";
     }else{
-        var query = "INSERT INTO enfermera VALUES('"+cedula+"','"+usuario+"')";
+        var query = "INSERT INTO enfermera VALUES('"+usuario+"','"+cedula+"')";
     }
     enviarCorreo(req.body.correo,req);
     pool.query(query);

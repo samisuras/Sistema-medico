@@ -11,7 +11,7 @@
 <body>
     <br>
     <div class="container pt-4 pb-4 border border-primary rounded-right">
-        <form class="">
+        <form>
         <div class="row">
             <div class="col-xl-12">
                 <h1 class="h1 pt-2 pb-4 text-center">Paciente</h1>
@@ -62,7 +62,7 @@
                             <span class="input-group-text bg-light" id="addon-wrapping"><i
                                     class="fas fa-user-nurse"></i></span>
                         </div>
-                        <textarea rows="4" cols="50" placeholder="Alergias"></textarea>
+                        <textarea ng-model="alergias" rows="4" cols="50" placeholder="Alergias"></textarea>
                     </div>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
@@ -87,12 +87,12 @@
                             <span class="input-group-text bg-light" id="addon-wrapping"><i
                                     class="fas fa-user-nurse"></i></span>
                         </div>
-                        <textarea rows="4" cols="50" placeholder="Malestares"></textarea>
+                        <textarea ng-model="malestares" rows="4" cols="50" placeholder="Malestares"></textarea>
                     </div>
                 </div>
 
                 <div class="col-xl-4 text-left">
-                        <button type="submit" class="btn btn-success btn-sm btn-block">Registrar</button>
+                        <button type="submit" ng-click="registrarPaciente()" class="btn btn-success btn-sm btn-block">Registrar</button>
                 </div>
                 <div class="col-xl-8"></div>
 

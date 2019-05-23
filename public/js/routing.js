@@ -29,6 +29,32 @@ app.config(function ($routeProvider) {
 
 });
 
+app.controller('formPacienteController', function($scope,$http){
+    $scope.registrarPaciente = function(){
+        var data = {
+            nombre: $scope.name,
+            sangre: $scope.sangre,
+            pulso: $scope.pulso,
+            talla: $scope.talla,
+            temperatura: $scope.temperatura,
+            alergias: $scope.alergias,
+            peso: $scope.peso,
+            presion: $scope.presionAr,
+            malestares: $scope.malestares
+        };
+        $http.post('addPac',data)
+        .then(
+            function(response){
+                alert(response.data.message);
+                location.reload();
+            },
+            function(response){
+                $scope.error = true;
+                $scope.mensajeError = response.data.message;
+            }
+        );
+    };
+});
 app.controller('indexController', function ($scope) {
     //SESION
     $scope.usuario = sessionStorage.getItem('usuario');
@@ -137,11 +163,7 @@ app.controller('indexController', function ($scope) {
         area: 'Enfermera',
     },
     ];
-
-
-
 });
-
 app.controller('formController', function ($scope,$http) {
 
     $scope.opciones = [
@@ -177,14 +199,15 @@ app.controller('formController', function ($scope,$http) {
         $http.post('/addUser',data)
         .then(
             function(response){
-        },
-        function(response){
-            $scope.error = true;
-            $scope.mensajeError = response.data.message;
-        });
+                alert('Usuario creado correctamente');
+                window.location.href = '/';
+            },
+            function(response){
+                $scope.error = true;
+                $scope.mensajeError = response.data.message;
+            });
     };
 });
-
 app.controller('loginController', function ($scope,$http) {
     $scope.login = function() {
         var data = {
@@ -197,7 +220,9 @@ app.controller('loginController', function ($scope,$http) {
             function(response){
                 if($scope.usuario == "root")
                     sessionStorage.setItem('privilegio',1);
-                else    
+                else if(response.data.privilegio == 2)    
+                    sessionStorage.setItem('privilegio',2);
+                else
                     sessionStorage.setItem('privilegio',0);
                 sessionStorage.setItem('usuario',$scope.usuario);
                 window.location.href = "/";
