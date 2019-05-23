@@ -1,12 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>qhjkujhygfdswdefrgtyujiyhgtrfdesa</title>
+    <title>Paciente</title>
 </head>
+
 <body>
-    
+    <br>
+    <div class="container pt-4 pb-4 border border-primary rounded-right">
+        <form class="">
+        <div class="row">
+            <div class="col-xl-12">
+                <h1 class="h1 pt-2 pb-4 text-center">Paciente</h1>
+            </div>
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-group flex-nowrap mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-light" id="addon-wrapping"><i
+                                    class="fa fa-user"></i></span>
+                        </div>
+                        <input type="text" class="form-control" ng-model="name" id="name" placeholder="Nombre" required>
+                    </div>
+                    <div class="input-group flex-nowrap mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-ad"></i></span>
+                        </div>
+                        <input type="text" class="form-control" ng-model="sangre" id="sangre"
+                            placeholder="Tipo de Sangre" required>
+                    </div>
+                    <div class="input-group flex-nowrap mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-light" id="addon-wrapping"><i
+                                    class="fas fa-syringe"></i></i></span>
+                        </div>
+                        <input type="number" class="form-control" ng-model="pulso" id="pulso"
+                            placeholder="Pulso Cardiaco" required>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-group flex-nowrap mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-light" id="addon-wrapping"><i
+                                    class="fas fa-user"></i></span>
+                        </div>
+                        <input type="number" class="form-control" ng-model="talla" id="talla" placeholder="Talla"
+                            required>
+                    </div>
+                    <div class="input-group flex-nowrap mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-light" id="addon-wrapping"><i
+                                    class="fas fa-temperature-low"></i></span>
+                        </div>
+                        <input type="number" class="form-control" ng-model="temperatura" id="temperatura"
+                            placeholder="Temperatura" required>
+                    </div>
+                    <div class="input-group flex-nowrap mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-light" id="addon-wrapping"><i
+                                    class="fas fa-user-nurse"></i></span>
+                        </div>
+                        <textarea rows="4" cols="50" placeholder="Alergias"></textarea>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-group flex-nowrap mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-light" id="addon-wrapping"><i
+                                    class="fas fa-user"></i></span>
+                        </div>
+                        <input type="number" class="form-control" ng-model="peso" id="peso" placeholder="Peso (kg)"
+                            required>
+                    </div>
+                    <div class="input-group flex-nowrap mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-light" id="addon-wrapping"><i
+                                    class="fas fa-syringe"></i></span>
+                        </div>
+                        <input type="number" class="form-control" ng-model="presionAr" id="presionAr"
+                            placeholder="Presion Arterial" required>
+                    </div>
+                    <div class="input-group flex-nowrap mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-light" id="addon-wrapping"><i
+                                    class="fas fa-user-nurse"></i></span>
+                        </div>
+                        <textarea rows="4" cols="50" placeholder="Malestares"></textarea>
+                    </div>
+                </div>
+
+                <div class="col-xl-4 text-left">
+                        <button type="submit" class="btn btn-success btn-sm btn-block">Registrar</button>
+                </div>
+                <div class="col-xl-8"></div>
+
+        </div>
+    </form>
+    </div>
+    <br><br>
 </body>
+
 </html>

@@ -18,6 +18,10 @@ app.config(function ($routeProvider) {
             templateUrl: 'pages/Login.html',
             controller: 'loginController'
         })
+        .when('/formPaciente', {
+            templateUrl: 'pages/formularioPaciente.html',
+            controller: 'formPacienteController'
+        })
         .otherwise({
             templateUrl: 'pages/routeNotFound.html',
             controller: 'notFoundController'
