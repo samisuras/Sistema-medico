@@ -15,7 +15,7 @@
                 <div align="center">
                     <h1 class="wow fadeInUp"><spam>Ingrese sus datos</spam></h1>
                 </div>
-                <form action="/addUser" method="POST" >
+                <form>
 
                     <div class="row ml-5 mr-5">
                         <div class="col-md-6">
@@ -24,21 +24,21 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-user"></i></span>
                                 </div>
-                                <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Pancho Samuel" required>
+                                <input type="text" class="form-control" ng-model="nombre" id="nombre" placeholder="Pancho Samuel" required>
                             </div>
                             <label for="apellidos">Apellidos</label>
                             <div class="input-group flex-nowrap mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-user"></i></span>
                                 </div>
-                                <input type="text" class="form-control" name="apellidos" id="apellidos" placeholder="Castro Perez" required>
+                                <input type="text" class="form-control" ng-model="apellidos" id="apellidos" placeholder="Castro Perez" required>
                             </div>
                             <label for="usuario">Nombre de usuario</label>
                             <div class="input-group flex-nowrap mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-user"></i></span>
                                 </div>
-                                <input type="text" class="form-control" name="usuario" id="usuario" placeholder="Pancho_Castro" required>
+                                <input type="text" class="form-control" ng-model="usuario" id="usuario" placeholder="Pancho_Castro" required>
                             </div>
                             <div class="input-group flex-nowrap mb-3">
                                 <small class="m-1">Elige una opcion </small>
@@ -50,19 +50,19 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-user"></i></span>
                                 </div>
-                                <input type="text" class="form-control" name="especialidad" id="especialidad" placeholder="Especialidad" required>
+                                <input type="text" class="form-control" ng-model="especialidad" id="especialidad" placeholder="Especialidad" required>
                             </div>
                             <div class="input-group flex-nowrap mb-3" ng-if="selectOption == 0" ng-cloak>
                                 <div class="input-group-prepend">
                                     <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-user"></i></span>
                                 </div>
-                                <input type="text" class="form-control" name="cedula" id="cedula" placeholder="Cedula Profesional" required>
+                                <input type="text" class="form-control" ng-model="cedula" id="cedula" placeholder="Cedula Profesional" required>
                             </div>
                             <div class="input-group flex-nowrap mb-3" ng-if="selectOption == 1" ng-cloak>
                                 <div class="input-group-prepend">
                                     <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-user"></i></span>
                                 </div>
-                                <input type="text" class="form-control" name="cedula" id="cedula" placeholder="Cedula Profesional" required>
+                                <input type="text" class="form-control" ng-model="cedula2" id="cedula2" placeholder="Cedula Profesional" required>
                             </div>
                         </div>
                         
@@ -72,14 +72,14 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-at"></i></span>
                                 </div>
-                                <input type="email" class="form-control" name="correo" id="correo" placeholder="examlpe@correo.com" required>
+                                <input type="email" class="form-control" ng-model="correo" id="correo" placeholder="examlpe@correo.com" required>
                             </div>
                             <label for="contrasena">Contraseña</label>
                             <div class="input-group flex-nowrap mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-key"></i></span>
                                 </div>
-                                <input type="password" class="form-control" name="contrasena" id="contrasena" placeholder="*******" required>
+                                <input type="password" class="form-control" ng-model="contrasena" id="contrasena" placeholder="*******" required>
                             </div>
                             <label for="contrasena">Repita la contraseña</label>
                             <div class="input-group flex-nowrap mb-3">
@@ -90,7 +90,7 @@
                             </div>
                         </div>
                         <div class="col-sm-12" align="center">
-                            <button type="submit" class="btn btn-dark btn-lg mt-3">Registrar</button>
+                            <button ng-click="registroTrabajador()" class="btn btn-dark btn-lg mt-3">Registrar</button>
                         </div>
                     </div>
                 </form>
