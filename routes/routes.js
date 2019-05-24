@@ -101,12 +101,21 @@ async function addExConsulta(req){
         var peso = req.body.peso;
         var presion = req.body.presion;
         var malestares = req.body.malestares;
-        var query = "INSERT INTO expediente_consulta (nombreUsuario,fecha,tipoSangre,alergias,malestar,peso,talla,temperatura,presionArterial,pulsoCardiaco) VALUES ('"+usuario+"',NOW(),'"+sangre+"','"+alergias+"','"+malestares+"',"+peso+","+talla+","+temperatura+","+presion+","+pulso+");";
+
+        var userMedico = await randomMedico();
+        
+        var query = "INSERT INTO expediente_consulta (nombreUsuario,fecha,tipoSangre,alergias,malestar,peso,talla,temperatura,presionArterial,pulsoCardiaco,userMedico) VALUES ('"+usuario+"',NOW(),'"+sangre+"','"+alergias+"','"+malestares+"',"+peso+","+talla+","+temperatura+","+presion+","+pulso+",'"+userMedico+"');";
         pool.query(query);
     } catch(e){
         console.log(e);
         return;
     }
+}
+async function randomMedico(){
+    var query = "SELECT * FROM medico";
+    var res = await pool.query(query);
+    var random = Math.floor(Math.random() * res.length);
+    return res[random].nombreUsuario;
 }
 async function addUser(req,res)
 {
