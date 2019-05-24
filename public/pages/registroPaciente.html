@@ -1,83 +1,66 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
-</head>
-<body>
-    <div class="container pb-3" ng-app="app">
-        <div class="row" ng-controller="formController">
-            <div class="col-sm-12 mt-5">
-                <div align="center">
-                    <h1 class="wow fadeInUp"><spam>Ingrese sus datos</spam></h1>
-                </div>
-                <form>
-
-                    <div class="row ml-5 mr-5">
-                        <div class="col-md-6">
-                            <label for="nombre">Nombre(s)</label>
-                            <div class="input-group flex-nowrap mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-user"></i></span>
-                                </div>
-                                <input type="text" class="form-control" ng-model="nombre" id="nombre" placeholder="Pancho Samuel" required>
+<div class="container pb-3">
+    <div class="row">
+        <div class="col-sm-12 mt-5">
+            <div align="center">
+                <h1 class="wow fadeInUp"><spam>Ingrese sus datos</spam></h1>
+            </div>
+            <form>
+                <div class="row ml-5 mr-5">
+                    <div class="col-md-6">
+                        <label for="nombre">Nombre(s)</label>
+                        <div class="input-group flex-nowrap mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-user"></i></span>
                             </div>
-                            <label for="apellidos">Apellidos</label>
-                            <div class="input-group flex-nowrap mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-user"></i></span>
-                                </div>
-                                <input type="text" class="form-control" ng-model="apellidos" id="apellidos" placeholder="Castro Perez" required>
-                            </div>
-                            <label for="usuario">Nombre de usuario</label>
-                            <div class="input-group flex-nowrap mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-user"></i></span>
-                                </div>
-                                <input type="text" class="form-control" ng-model="usuario" id="usuario" placeholder="Pancho_Castro" required>
-                            </div>
-
-                            
+                            <input type="text" class="form-control" ng-model="nombre" id="nombre" placeholder="Pancho Samuel" required>
                         </div>
+                        <label for="apellidos">Apellidos</label>
+                        <div class="input-group flex-nowrap mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input type="text" class="form-control" ng-model="apellidos" id="apellidos" placeholder="Castro Perez" required>
+                        </div>
+                        <label for="usuario">Nombre de usuario</label>
+                        <div class="input-group flex-nowrap mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input type="text" placeholder="Sam_Leos" class="form-control" ng-model="usuario" id="usuario" required>
+                        </div>
+
                         
-                        <div class="col-md-6">
-                            <label for="correo">Correo Electronico</label>
-                            <div class="input-group flex-nowrap mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-at"></i></span>
-                                </div>
-                                <input type="email" class="form-control" ng-model="correo" id="correo" placeholder="examlpe@correo.com" required>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label for="correo">Correo Electronico</label>
+                        <div class="input-group flex-nowrap mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-at"></i></span>
                             </div>
-                            <label for="contrasena">Contraseña</label>
-                            <div class="input-group flex-nowrap mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-key"></i></span>
-                                </div>
-                                <input type="password" class="form-control" ng-model="contrasena" id="contrasena" placeholder="*******" required>
-                            </div>
-                            <label for="contrasena">Repita la contraseña</label>
-                            <div class="input-group flex-nowrap mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-key"></i></span>
-                                </div>
-                                <input type="password" class="form-control"  id="contrasena" placeholder="*******" required>
-                            </div>
+                            <input type="email" class="form-control" ng-model="correo" id="correo" placeholder="examlpe@correo.com" required>
                         </div>
-                        <div class="col-sm-12" align="center">
-                            <button ng-click="registroTrabajador()" class="btn btn-dark btn-lg mt-3">Registrar</button>
+                        <label for="contrasena">Contraseña</label>
+                        <div class="input-group flex-nowrap mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-key"></i></span>
+                            </div>
+                            <input type="password" class="form-control" ng-model="contrasena" id="contrasena" placeholder="*******" required>
+                        </div>
+                        <label for="contrasena">Repita la contraseña</label>
+                        <div class="input-group flex-nowrap mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-key"></i></span>
+                            </div>
+                            <input type="password" class="form-control"  id="contrasena2" placeholder="*******" required>
                         </div>
                     </div>
-                </form>
-            </div>
+                    <div class="col-sm-12" align="center">
+                        <button ng-click="registraUsuarioPac()" type="submit" class="btn btn-dark btn-lg mt-3">Registrar</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
-        
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-</body>
-</html>
+</div>
+

@@ -57,6 +57,17 @@ router.post('/loginUser', async (req,res)=>{
         });
     }
 });
+router.post('/addUserPac', async (req,res)=>{
+    var existe = await agregar_verificarUser(req);
+    if(!existe){
+        res.send({
+            message: "El paciente ha sido dado de alta"
+        })
+    }else
+        res.status(402).send({
+            message: "Usuario y/o correo ya registrado"
+        });
+});
 //FUNCIONES
 async function cuentaActivada(req){
     var query = "SELECT * FROM usuario WHERE nombreUsuario = '"+req.body.user+"'";
@@ -98,6 +109,30 @@ async function addExConsulta(req){
     }
 }
 async function addUser(req,res)
+{
+    try{
+        var existeUs = await existeUsuario(req);
+        if(existeUs === true)
+        {
+            console.log('El usuario ya ha sido registrado');
+            return true;
+        }
+        var existeCor= await existeCorreo(req); 
+        if(existeCor === true)
+        {
+            console.log('El correo ya ha sido registrado');
+            return true;
+        }else{
+            await agregarUsuario(req);
+            return false;
+        }
+    }
+    catch(e){
+        console.log(e);
+        return false;
+    }
+}
+async function agregar_verificarUser(req)
 {
     try{
         var existeUs = await existeUsuario(req);

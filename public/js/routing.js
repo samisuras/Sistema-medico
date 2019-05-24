@@ -24,7 +24,7 @@ app.config(function ($routeProvider) {
         })
         .when('/formRegistroPaciente', {
             templateUrl: 'pages/registroPaciente.html',
-            controller: 'formPacienteController'
+            controller: 'formRegistroPacienteController'
         })
         .otherwise({
             templateUrl: 'pages/routeNotFound.html',
@@ -236,5 +236,26 @@ app.controller('loginController', function ($scope,$http) {
                 $scope.mensajeError = response.data.message;
             }
         );
+    }
+});
+app.controller('formRegistroPacienteController', function($scope, $http){
+    $scope.registraUsuarioPac = function(){
+        var data2 = {
+            nombre: $scope.nombre,
+            apellidos: $scope.apellidos,
+            usuario: $scope.usuario,
+            correo: $scope.correo,
+            contra: $scope.contrasena
+        };
+        $http.post('/addUserPac',data2)
+        .then(function(response){
+                alert(response.data.message);
+            },
+            function(response){
+                alert(response.data.message);
+                /*
+                $scope.error = true;
+                $scope.mensajeError = response.data.message;*/
+        });
     }
 });
