@@ -68,7 +68,17 @@ router.post('/addUserPac', async (req,res)=>{
             message: "Usuario y/o correo ya registrado"
         });
 });
+router.post('/disponible',async (req,res) => {
+    await usuarioDisponible(req);
+    res.send({
+        message: 'Todo bien'
+    });
+});
 //FUNCIONES
+async function usuarioDisponible(req){
+    var query = "INSERT INTO video_chat (nombreUsuario,estado) VALUES ('"+req.body.user+"',1)";
+    pool.query(query);
+}
 async function cuentaActivada(req){
     var query = "SELECT * FROM usuario WHERE nombreUsuario = '"+req.body.user+"'";
     var res = await pool.query(query);
