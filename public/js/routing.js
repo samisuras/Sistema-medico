@@ -30,6 +30,10 @@ app.config(function ($routeProvider) {
             templateUrl: 'pages/registroPaciente.html',
             controller: 'formRegistroPacienteController'
         })
+        .when('/HistorialConsultas', {
+            templateUrl: 'pages/HistorialConsultas.html',
+            controller: 'ConsultasController'
+        })
         .otherwise({
             templateUrl: 'pages/routeNotFound.html',
             controller: 'notFoundController'
@@ -264,22 +268,61 @@ app.controller('formRegistroPacienteController', function($scope, $http){
         });
     }
 });
-app.controller('formVideo', function($scope,$http){
-    $scope.iniciar = function(){
-        (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-            window.onload = function(){  
-              var getUserMedia = require('getusermedia')
-            
-              getUserMedia({ video: true, audio: true }, function (err, stream) {
-                if (err) return console.error(err)
-                
-                var videoMio = document.getElementById('videoMio');
-            
-                videoMio.srcObject = stream
-                videoMio.onloadedmetadata = function(e) {
-                    videoMio.play();
-                };
+app.controller('ConsultasController', function ($scope) {
+    $scope.NombreMedico = 'Juan Cornejo';
+    $scope.consulta = [
+        {
+        paciente: 'juan',
+        fecha: '12/10/19',
+        sangre: 'oplus',
+        pulso: 15,
+        talla: 16,
+        temperatura: 17,
+        alergia: 'a la caca',
+        peso: 18,
+        presion: 19,
+        malestares: 'la caca again',
+        }, 
+        {
+        paciente: 'popo',
+        fecha: '13/10/18',
+        sangre: 'oplus',
+        pulso: 15,
+        talla: 16,
+        temperatura: 17,
+        alergia: 'a la caca',
+        peso: 18,
+        presion: 19,
+        malestares: 'la caca again',
+        }
+    ];
+    $scope.TablaConsultas = true;
+    $scope.TablaFiltrada = false;
+    $scope.OcultarDataFiltrada = function(){
+        $scope.TablaFiltrada = false;
+        $scope.TablaConsultas = true;
+    }
+    $scope.FiltrarConsulta = function(idPaciente){
+        $scope.TablaConsultas = false;
+        $scope.TablaFiltrada = true;
+        $scope.dataFiltrada = [{
+            paciente:  $scope.consulta[idPaciente].paciente,
+            fecha: $scope.consulta[idPaciente].fecha,
+            sangre: $scope.consulta[idPaciente].sangre,
+            pulso: $scope.consulta[idPaciente].pulso,
+            talla: $scope.consulta[idPaciente].talla,
+            temperatura: $scope.consulta[idPaciente].temperatura,
+            alergia: $scope.consulta[idPaciente].alergia,
+            peso: $scope.consulta[idPaciente].peso,
+            presion: $scope.consulta[idPaciente].presion,
+            malestares: $scope.consulta[idPaciente].malestares,
+        }]
+        
+    }
+});
+app.controller('formVideo', function ($scope,$http) {
 
+<<<<<<< HEAD
                 var Peer = require('simple-peer')
                 var peer = new Peer({
                   initiator: location.hash === '#!/videoChat#init',
@@ -10471,5 +10514,16 @@ app.controller('formVideo', function($scope,$http){
             
             },{}]},{},[1]);
             
+=======
+    $scope.EsconderID = false;
+    $scope.Chat = false;
+    $scope.IniciarChat = function(){
+        $scope.Chat = true;
     }
+    $scope.OcultarChat = function(){
+        $scope.Chat = false;
+>>>>>>> 6550b5784783e236a213c606ff1e705ae6cca673
+    }
+ 
+
 });
