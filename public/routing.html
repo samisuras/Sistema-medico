@@ -7,7 +7,6 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
-
     <!-- Favicons -->
     <link href="img/favicon.png" rel="icon">
 
@@ -35,8 +34,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
-    <script src="js/routing.js"></script>
-
+    <script src="./js/routing.js"></script>
 </head>
 
 <body id="body" ng-controller="indexController">
@@ -77,6 +75,7 @@
                     <li ><a ng-if="!usuario" href="#!Login" ng-click="ocultar()">Iniciar Sesión</a></li>
                     <li ng-if="usuario"><a href="#">Bienvenido: {{usuario}}</a></li>
                     <li ng-if="usuario"><a href="#" ng-click="cerrarSesion()">Cerrar Sesion</a></li>
+                    <li><a href="#!videoChat">Video Chat</a></li>
                 </ul>
             </nav><!-- #nav-menu-container -->
         </div>
@@ -135,7 +134,7 @@
 
 
     <script src="js/main.js"></script>
-    <script src="//js/login.js"></script>
+    <script src="js/login.js"></script>
 
 </body>
 
