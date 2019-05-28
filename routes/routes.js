@@ -6,6 +6,23 @@ const path = require('path');
 router.get('/',(req,res) => {
     res.sendfile('./public/routing.html');
 });
+router.post('/crearTexto', async (req,res)=>{
+    const fs = require('fs');
+    var cadena = req.body.id;
+    fs.writeFileSync("./db/"+req.body.usuario+".txt",cadena);
+    res.send({
+        message: 'Todo bien'
+    });
+});
+router.post('/leerArchivo', async (req,res)=>{
+    const fs = require('fs');
+    var usuario = req.body.usuario;
+    let data = fs.readFileSync("./db/"+usuario+".txt");
+    texto = data.toString();
+    res.send({
+        clave: texto
+    })
+});
 router.get('/verificar/:user', async(req,res)=>{
     await verificar(req.params.user);
     res.sendfile('./public/pages/verificado.html');
@@ -76,8 +93,14 @@ router.post('/disponible',async (req,res) => {
 });
 //FUNCIONES
 async function usuarioDisponible(req){
-    var query = "INSERT INTO video_chat (nombreUsuario,estado) VALUES ('"+req.body.user+"',1)";
-    pool.query(query);
+    let query = "UPDATE video_chat SET estado = 1 WHERE nombreUsuario = '"+req.body.user+"'";
+    let existe = await pool.query(query);
+    console.log(existe);
+    if(existe.affectedRows == 0)
+    {
+        let query = "INSERT INTO video_chat (nombreUsuario,estado) VALUES('"+req.body.user+"',1)";
+        res = await pool.query(query);
+    }
 }
 async function cuentaActivada(req){
     var query = "SELECT * FROM usuario WHERE nombreUsuario = '"+req.body.user+"'";

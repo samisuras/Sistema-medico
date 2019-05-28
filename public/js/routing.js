@@ -286,14 +286,56 @@ app.controller('formVideo', function($scope,$http){
                   trickle: false,
                   stream: stream
                 })
-            
+                
                 peer.on('signal', function (data) {
                   document.getElementById('yourId').value = JSON.stringify(data)
+                  var datos = document.getElementById('yourId').value;
+                  if(location.hash === '#!/videoChat#init'){
+                    var chat = {
+                      id: datos,
+                      usuario: sessionStorage.getItem('usuario')
+                    };
+                    $http.post('/crearTexto',chat).then();
+                  }else{
+                    var chat = {
+                      id: JSON.stringify(data),
+                      usuario: sessionStorage.getItem('usuario')
+                    };
+                    document.getElementById('yourId').value = JSON.stringify(data)
+                    $http.post('/crearTexto',chat).then();
+                  }
                 })
             
                 document.getElementById('connect').addEventListener('click', function () {
-                  var otherId = JSON.parse(document.getElementById('otherId').value)
-                  peer.signal(otherId)
+                  if(location.hash === '#!/videoChat#init'){
+                    var usuarioReceptor = {
+                      usuario: 'Danii'//Generar dinamico
+                    };
+                    $http.post('/leerArchivo',usuarioReceptor).then(
+                      function(response){
+                        var otherId = JSON.parse(response.data.clave)
+                        document.getElementById('otherId').value = response.data.clave
+                        peer.signal(otherId)
+                      },
+                      function(response){
+                          alert(response.data.message);
+                      }
+                    )
+                  }else{
+                    var usuarioEmisor = {
+                      usuario: 'root'//Generar dinamico
+                    };
+                    $http.post('/leerArchivo',usuarioEmisor)
+                    .then(
+                      function(response){
+                        document.getElementById('otherId').value = response.data.clave
+                        peer.signal(JSON.parse(response.data.clave))
+                      },
+                      function(response){
+                          alert(response.data.message);
+                      }
+                    )
+                  } 
                 })
             
                 document.getElementById('send').addEventListener('click', function () {
