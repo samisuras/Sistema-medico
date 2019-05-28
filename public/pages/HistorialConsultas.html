@@ -1,0 +1,62 @@
+<section class="wow fadeInUp">
+    <div class="container pt-4 pb-4">
+        <h1>Consultas</h1>
+        <h3>Medico: {{NombreMedico}}</h3>
+        <table class="table table-hover table-striped table-bordered text-center" ng-show="TablaConsultas">
+            <thead>
+                <tr class="bg-info text-white">
+                    <th scope="col">Paciente</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Malestar</th>
+                    <th scope="col">Detalles</th>
+                    <th scope="col">Terminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="data in consulta">
+                    <th scope="row">{{data.paciente}}</th>
+                    <td>{{data.fecha}}</td>
+                    <td>{{data.malestares}}</td>
+                    <td><button type="button" class="btn btn-primary" ng-click="FiltrarConsulta($index)"><i
+                                class="fas fa-info-circle"></i></button></td>
+                    <td><button type="button" class="btn btn-danger"><i class="fas fa-exclamation"></i></button></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="table table-hover table-striped table-bordered text-center wow fadeInUp" ng-show="TablaFiltrada">
+            <thead>
+                <tr class="bg-info text-white">
+                    <th scope="col">Paciente</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Sangre</th>
+                    <th scope="col">Pulso</th>
+                    <th scope="col">Talla</th>
+                    <th scope="col">Temperatura</th>
+                    <th scope="col">Alergia</th>
+                    <th scope="col">Peso</th>
+                    <th scope="col">Presion</th>
+                    <th scope="col">Malestar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="wow fadeInUp">
+                    <th scope="row">{{dataFiltrada[0].paciente}}</th>
+                    <td>{{dataFiltrada[0].fecha}}</td>
+                    <td>{{dataFiltrada[0].sangre}}</td>
+                    <td>{{dataFiltrada[0].pulso}}</td>
+                    <td>{{dataFiltrada[0].talla}}</td>
+                    <td>{{dataFiltrada[0].temperatura}}</td>
+                    <td>{{dataFiltrada[0].alergia}}</td>
+                    <td>{{dataFiltrada[0].peso}}</td>
+                    <td>{{dataFiltrada[0].presion}}</td>
+                    <td>{{dataFiltrada[0].malestares}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <button type="button" class="btn btn-success btn-sm text-center wow fadeInRight" ng-show="TablaFiltrada"
+            ng-click="OcultarDataFiltrada()"><i class="fas fa-undo-alt mr-2"></i></i>Regresar</button>
+
+
+    </div>
+</section>
