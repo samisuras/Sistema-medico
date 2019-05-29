@@ -1,54 +1,63 @@
 <div ng-init="iniciar()">
-  <div>
+  <div class="container pt-5">
+    <div class="row">
+      <div class="col-xl-4" align="center"><br><br><br>
+        <div class="col-xl-12 text-white bg-dark row wow fadeInLeft">
+          <div class="col-xl-12">
+            <h1 class="h1">Mi video</h1>
+          </div>
+        </div>
+        <video width="100%" height="auto" id="videoMio" controls autoplay class="wow fadeInRight"></video>
+      </div>
+      <div class="col-xl-8" align="center">
+        <div class="col-xl-12 row bg-dark text-white wow fadeInRightBig">
+          <div class="col-xl-9">
+            <h1 class="h1">Su video</h1>
+          </div>
+          <div class="col-xl-3 mt-2">
+              <button class="btn btn-danger btn-block btn-sm"><i class="fas fa-video-slash mr-2"></i>Disconnect</button><br />
+          </div>
+        </div>
+        <video width="100%" height="auto" id="videoSuyo" controls autoplay class="wow fadeInUp"></video>
+      </div>
+    </div>
+  </div>
+<hr>
+    <div class="container pt-3 border border-primary rounded">
+      <div class="row">
+        <div class="col-xl-6">
+          <div class="form-group wow fadeInRight">
+            <label>Your Id:</label>
+            <textarea class="form-control" id="yourId"></textarea>
+          </div>
+        </div>
+        <div class="col-xl-6 wow fadeInLeft">
+          <div class="form-group">
+            <label>Other Id:</label>
+            <textarea class="form-control" id="otherId"></textarea>
+          </div>
+        </div>
+        <div class="col-xl-4"></div>
+        <div class="col-xl-4 wow fadeInDown">
+          <button id="connect" class="btn btn-success btn-block"><i class="fas fa-video mr-2"></i>Connect</button><br />
+        </div>
+        <div class="col-xl-4"></div>
+      </div>
+    </div>
+
+ 
+
+
+
+  <script src="../js/bundle2.js" charset="utf-8"></script>
+</div>
+<!--<div>
     <label>Your ID:</label><br />
     <textarea id="yourId"></textarea><br />
     <label>Other ID:</label><br />
     <textarea id="otherId"></textarea>
     <button id="connect">connect</button><br />
-  </div>
-
-  <div class="container-fluid m-5">
-    <div class="row">
-      <div class="col-sm-3 pt-5" align="center"><br><br><br>
-        <div class="col-xl-12 text-white bg-info row wow fadeInLeft">
-            <div class="col-xl-12">
-                <h1 class="h1">Mi video</h1>
-            </div>
-        </div>
-        <video width="100%" height="300px" id="videoMio" controls autoplay class="wow fadeInRight"></video>
-      </div>
-      <div class="col-sm-7" align="center">
-        <div class="col-xl-12 row bg-info text-white wow fadeInRightBig">
-          <div class="col-xl-8">
-            <h1 class="h1">Su video</h1>
-          </div>
-          <div class="col-xl-3 row mt-2 ml-2">
-            <div class="col-xl-5 text-rigth">
-              <button type="button" ng-click="IniciarChat()" class="btn btn-primary btn-sm">
-                <i class="fas fa-comment-dots"></i><small> (0)</small>
-              </button>
-            </div>
-            <div class="col-xl-1 text-rigth"">
-              <button type="button" class="btn btn-danger btn-sm"><i class="fas fa-video-slash"></i></button>
-            </div>
-          </div>
-        </div>
-        <video width="100%" height="500px" id="videoSuyo" controls autoplay class="wow fadeInUp"></video>
-    </div>
-    <div class="col-sm-2 pt-5">
-      <div class="col-xl-12 border border-info text-center pt-2 pb-2 rounded" ng-show="Chat">
-        <h1 class="h1">Chat</h1>
-        <textarea id="yourMessage" placeholder="Enter Message"></textarea>
-        <button id="send" type="button" class="btn btn-success btn-sm">send</button>
-        <button type="button" ng-click="OcultarChat()" class="btn btn-danger btn-sm"><i class="fa fa-window-close mr-1"></i>Ocultar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  </div>
-
-  <script src="../js/bundle2.js" charset="utf-8"></script>
-</div>
+  </div>-->
 <!--
     <label>Your ID:</label><br/>
     <textarea id="yourId"></textarea><br/>
