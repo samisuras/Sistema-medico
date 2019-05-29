@@ -392,10 +392,10 @@ $scope.iniciar = function(){
                   } 
                 })
             
-                document.getElementById('send').addEventListener('click', function () {
+                /*document.getElementById('send').addEventListener('click', function () {
                   var yourMessage = document.getElementById('yourMessage').value
                   peer.send(yourMessage)
-                })
+                })*/
             
                 peer.on('data', function (data) {
                   document.getElementById('messages').textContent += data + '\n'
