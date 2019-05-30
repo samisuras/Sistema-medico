@@ -65,17 +65,19 @@
 
             <nav id="nav-menu-container">
                 <ul class="nav-menu">
-                    <li ng-if="privilegio == 2"><a href="#!HistorialConsultas">Historial de Consultas</a></li>
+                    <li ng-if="privilegio == 2 "><a href="#!HistorialConsultas">Historial de Consultas</a></li>
+                    <!--<li ng-if="privilegio == 0"><a href="#!HistorialConsultasPaciente">Historial de Consultas</a></li>-->
                     <li ng-if="usuario == 'root'"><a href="#!form1" ng-click="ocultar()">Registro Personal</a></li>
-                    <li ng-if="privilegio == 2"><a href="#!formPaciente">Registro consulta</a></li>
-                    <li ng-if="privilegio == 2"><a href="#!formRegistroPaciente">Registro-Paciente</a></li>
+                    <li ng-if="privilegio == 2"><a href="#!formPaciente">Registrar consulta</a></li>
+                    <li ng-if="privilegio == 2"><a href="#!formRegistroPaciente">Registrar Paciente</a></li>
                     <li><a href="#!inicio" ng-click="mostrar()" onclick="regresar();">Inicio</a></li>
                     <li><a href="#contact" ng-show="variable">Contactanos</a></li>
                     <li><a href="#services" ng-show="variable">Servicos</a></li>
                     <li ><a ng-if="!usuario" href="#!Login" ng-click="ocultar()">Iniciar Sesión</a></li>
                     <li ng-if="usuario"><a href="#">Bienvenido: {{usuario}}</a></li>
                     <li ng-if="usuario"><a href="#" ng-click="cerrarSesion()">Cerrar Sesion</a></li>
-                    <li ng-if="usuario"><a href="#!videoChat">Video Chat</a></li>
+                    <li ng-if="privilegio == 0"><a href="#!videoContactos">Video Consulta</a></li>
+                    <li ng-if="usuario && privilegio == 2 && notificacion"><a ng-click="videoEntrante()"><i class="fas fa-bell text-warning">(1)</i></a></li>
                 </ul>
             </nav><!-- #nav-menu-container -->
         </div>
@@ -103,8 +105,6 @@
     <div ng-view>
 
     </div>
-
-
     <footer id="footer">
         <div class="container">
             <div class="copyright">

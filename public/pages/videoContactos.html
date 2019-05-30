@@ -1,0 +1,23 @@
+<section ng-init="traerContactos()" class="wow fadeInUp">
+        <div class="container pt-4 pb-4">
+            <h1>Medicos en línea:</h1>
+            <table class="table table-hover table-striped table-bordered text-center">
+                <thead>
+                    <tr class="bg-info text-white">
+                        <th scope="col">Medico</th>
+                        <th scope="col">Especialidad</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Llamar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="medico in medicos">
+                        <th scope="row">{{medico.nombreUsuario}}</th>
+                        <td>{{medico.especialidad}}</td>
+                        <td><i class="fas fa-circle text-success"></i></td>
+                        <td><a ng-click="receptorLlamada($index)" class="fas fa-video text-success fa-2x"></a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>

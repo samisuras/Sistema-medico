@@ -34,6 +34,14 @@ app.config(function ($routeProvider) {
             templateUrl: 'pages/HistorialConsultas.html',
             controller: 'ConsultasController'
         })
+        .when('/videoContactos',{
+            templateUrl: 'pages/videoContactos.html',
+            controller: 'videoContactosCtrl'
+        })
+        .when('HistorialConsultasPaciente',{
+            templateUrl: 'pages/HistorialConsultasPaciente.html',
+            controller: 'ConsultasPacienteCtrl'
+        })
         .otherwise({
             templateUrl: 'pages/routeNotFound.html',
             controller: 'notFoundController'
@@ -66,17 +74,45 @@ app.controller('formPacienteController', function($scope,$http){
         );
     };
 });
-app.controller('indexController', function ($scope) {
+app.controller('indexController', function ($scope,$http) {
     //SESION
     $scope.usuario = sessionStorage.getItem('usuario');
     $scope.privilegio = sessionStorage.getItem('privilegio');
     sessionStorage.setItem('rol',"");
     $scope.rol = sessionStorage.getItem('rol');
     $scope.cerrarSesion = function(){
+        let usuario = {
+          usuario: sessionStorage.getItem('usuario')
+        }
+        $http.post('/borrarNotificacion',usuario).then();
+        $http.post('/desconectarUser',usuario).then();
         sessionStorage.clear();
         window.location.href = "/";
     };
-
+    //NOTIFICACIONES
+    $http.get('/notificaciones/'+$scope.usuario+'')
+    .then(
+      function(response){
+        $scope.notificacion = true;
+        $scope.llamadaEntrante = response.data.llamadaEntrante;
+      },
+      function(response){
+      }
+    );
+    //VIDEO CHAT
+    $scope.videoEntrante = function(){
+      $http.get('/llamador/'+sessionStorage.getItem('usuario')+'')
+      .then(
+        function(response){
+          sessionStorage.setItem('receptor',response.data.receptor);
+          window.location.href = "/#!/videoChat";
+        },
+        function(response){
+            $scope.error = true;
+            $scope.mensajeError = response.data.message;
+        }
+      )
+  }
     $scope.variable = false;
     $scope.mostrar = function () {
         $scope.variable = true;
@@ -211,6 +247,7 @@ app.controller('formController', function ($scope,$http) {
         .then(
             function(response){
                 alert('Usuario creado correctamente');
+                alert(response.data.message);
                 window.location.href = '/';
             },
             function(response){
@@ -260,10 +297,8 @@ app.controller('formRegistroPacienteController', function($scope, $http){
                 alert(response.data.message);
             },
             function(response){
-                alert(response.data.message);
-                /*
                 $scope.error = true;
-                $scope.mensajeError = response.data.message;*/
+                $scope.mensajeError = response.data.message;
         });
     }
 });
@@ -278,10 +313,6 @@ app.controller('ConsultasController', function ($scope,$http) {
             $scope.consulta = response.data.consultas;
         },
         function(response){
-            alert(response.data.message);
-            /*
-            $scope.error = true;
-            $scope.mensajeError = response.data.message;*/
         }
         );
     };
@@ -309,12 +340,38 @@ app.controller('ConsultasController', function ($scope,$http) {
         
     }
 });
+app.controller('videoContactosCtrl', function ($scope,$http) {
+  $scope.medicos = '';
+  $scope.traerContactos = function(){
+    $http.get('/medicos')
+    .then(
+      function(response){
+        $scope.medicos = response.data.medicos;
+      },
+      function(response){
+      }
+    )
+  };
+  $scope.receptorLlamada = function(index){
+    sessionStorage.setItem('receptor',$scope.medicos[index].nombreUsuario);
+    usuario = {
+      usuario: $scope.medicos[index].nombreUsuario,
+      llamador: sessionStorage.getItem('usuario')
+    }
+    $http.post('/notificacionVideo',usuario)
+    .then(
+      function(response){
+        window.location.href = '#!videoChat#init';
+      },
+      function(response){
+      }
+    );
+  };
+});
 app.controller('formVideo', function ($scope,$http) {
 $scope.iniciar = function(){
   (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-    window.onload = function(){  
       var getUserMedia = require('getusermedia')
-    
       getUserMedia({ video: true, audio: true }, function (err, stream) {
         if (err) return console.error(err)
 
@@ -330,6 +387,8 @@ $scope.iniciar = function(){
                   trickle: false,
                   stream: stream
                 })
+                if(location.hash === '#!/videoChat#init')
+                  setTimeout(()=>{document.getElementById('connect').hidden = false;},30000)
                 
                 peer.on('signal', function (data) {
                   document.getElementById('yourId').value = JSON.stringify(data)
@@ -349,11 +408,11 @@ $scope.iniciar = function(){
                     $http.post('/crearTexto',chat).then();
                   }
                 })
-            
+                
                 document.getElementById('connect').addEventListener('click', function () {
                   if(location.hash === '#!/videoChat#init'){
                     var usuarioReceptor = {
-                      usuario: 'Danii'//Generar dinamico
+                      usuario: sessionStorage.getItem('receptor')//Generar dinamico
                     };
                     $http.post('/leerArchivo',usuarioReceptor).then(
                       function(response){
@@ -367,7 +426,7 @@ $scope.iniciar = function(){
                     )
                   }else{
                     var usuarioEmisor = {
-                      usuario: 'root'//Generar dinamico
+                      usuario: sessionStorage.getItem('receptor')//Generar dinamico
                     };
                     $http.post('/leerArchivo',usuarioEmisor)
                     .then(
@@ -386,7 +445,7 @@ $scope.iniciar = function(){
                   var yourMessage = document.getElementById('yourMessage').value
                   peer.send(yourMessage)
                 })*/
-            
+                setTimeout(()=>{if(location.hash !== '#!/videoChat#init') document.getElementById('connect').click();},1000)
                 peer.on('data', function (data) {
                   document.getElementById('messages').textContent += data + '\n'
                 })
@@ -399,7 +458,6 @@ $scope.iniciar = function(){
                   };
                 })
       })
-    }
     },{"getusermedia":8,"simple-peer":27}],2:[function(require,module,exports){
     'use strict'
     

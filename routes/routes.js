@@ -6,6 +6,70 @@ const path = require('path');
 router.get('/',(req,res) => {
     res.sendfile('./public/routing.html');
 });
+router.get('/llamador/:usuario', async(req,res)=>{
+    var {usuario} = req.params;
+    var query = "SELECT * FROM notificacion WHERE nombreUsuario = '"+usuario+"'";
+    let resul = await pool.query(query);
+    res.send({
+        receptor: resul[0].usuarioLlamada
+    })
+});
+router.get('/medicos',async (req,res)=>{
+    var query = "SELECT * FROM medico WHERE nombreUsuario IN(SELECT nombreUsuario FROM video_chat WHERE estado = 1)"
+    let resul = await pool.query(query); 
+    res.send({
+        medicos: resul
+    });
+}); 
+router.get('/verificar/:user', async(req,res)=>{
+    await verificar(req.params.user);
+    res.sendfile('./public/pages/verificado.html');
+});
+router.get('/notificaciones/:usuario', async (req,res)=>{
+    let {usuario} = req.params;
+    var query = "SELECT * FROM notificacion WHERE nombreUsuario = '"+usuario+"'";
+    let resul = await pool.query(query);
+    if(resul.length == 0)
+    {
+        //no hay notificaciones
+        res.status(401).send({
+            message: 'no hay notificaciones'
+        })
+    }else{
+        res.send({
+            llamadaEntrante: resul[0].usuarioLlamada,
+            llamada: 1
+        });
+    }
+});
+router.post('/borrarNotificacion',async (req,res)=>{
+    let {usuario} = req.body;
+    var query = "DELETE FROM notificacion WHERE nombreUsuario = '"+usuario+"'";
+    pool.query(query);
+}); 
+router.post('/notificacionVideo', async(req,res)=>{
+    let {usuario,llamador} = req.body;
+    var query = "UPDATE notificacion SET llamada = 1, usuarioLLamada = '"+llamador+"' WHERE nombreUsuario = '"+usuario+"'";
+    var resul = await pool.query(query);
+    if(resul.affectedRows == 0)
+    {
+        var query = "INSERT INTO notificacion (nombreUsuario,llamada,usuarioLlamada) VALUES('"+usuario+"',1,'"+llamador+"')";
+        await pool.query(query);
+        res.send({
+            message: 'Todo bien'
+        });
+    }else{
+        res.send({
+            message: 'Todo bien'
+        });
+    }
+});
+router.post('/desconectarUser', async (req,res)=>{
+    let {usuario} = req.body;
+    var query = "UPDATE video_chat SET estado = 0 WHERE nombreUsuario = '"+usuario+"'";
+    await pool.query(query);
+    res.send({message: 'Sesion cerrad'});
+});
 router.post('/crearTexto', async (req,res)=>{
     const fs = require('fs');
     var cadena = req.body.id;
@@ -22,10 +86,6 @@ router.post('/leerArchivo', async (req,res)=>{
     res.send({
         clave: texto
     })
-});
-router.get('/verificar/:user', async(req,res)=>{
-    await verificar(req.params.user);
-    res.sendfile('./public/pages/verificado.html');
 });
 router.post('/traerInfoConsultas', async (req,res)=>{
     let {usuario} = req.body;
@@ -49,7 +109,7 @@ router.post('/addUser',async (req,res)=>{
     {
         await agregarRol(req);
         res.send({
-            message: "Todo bien"
+            message: "Se ha enviado un correo para verificar su cuenta\n(El correo podria estar en SPAM)"
         });
     }else{
         res.status(402).send({
@@ -65,41 +125,53 @@ router.post('/addPac',async (req,res)=>{
     });
 });
 router.post('/loginUser', async (req,res)=>{
-    var activado = await cuentaActivada(req);
-    if(activado){
-        var error = await confirmarLogin(req);
-        if(error){
-            res.status(400).send({
-                message: "Error en Usuario y/o Contrasena"
+    var error = await confirmarLogin(req);
+    if(error){
+        res.status(400).send({
+            message: "Error en Usuario y/o Contrasena"
+        });
+    }else{
+        var medico = await pool.query("SELECT * FROM medico WHERE nombreUsuario = '"+req.body.user+"' ");
+        var enfermera = await pool.query("SELECT * FROM enfermera WHERE nombreUsuario = '"+req.body.user+"' ");
+        var confirmada = await cuentaActivada(req);
+        if(confirmada){
+            if((medico.length+enfermera.length) == 1)
+            res.send({
+                privilegio: 2
+            });
+            else
+            res.send({
+                privilegio: 0
             });
         }else{
-            var medico = await pool.query("SELECT * FROM medico WHERE nombreUsuario = '"+req.body.user+"' ");
-            var enfermera = await pool.query("SELECT * FROM enfermera WHERE nombreUsuario = '"+req.body.user+"' ");
-            if((medico.length+enfermera.length) == 1)
-                res.send({
-                    privilegio: 2
-                });
-            else
-                res.send({
-                    privilegio: 0
-                });
+            res.status(400).send({
+                message: "La cuenta no ha sido activada\nCheca tu correo\n(Puede estar en la carpeta SPAM)"
+            });
         }
-    }else{
-        res.status(400).send({
-            message: "La cuenta no ha sido activada\nCheca tu correo"
-        });
     }
 });
 router.post('/addUserPac', async (req,res)=>{
-    var existe = await agregar_verificarUser(req);
-    if(!existe){
-        res.send({
-            message: "El paciente ha sido dado de alta"
-        })
-    }else
+    let {nombre,apellidos,usuario,correo,contra} = req.body;
+    var existeUser = await existeUsuario(req);
+    if(!existeUser){
+        var existeCor = await existeCorreo(req);
+        if(!existeCor)
+        {
+            var query = "INSERT INTO usuario VALUES ('"+usuario+"','"+correo+"','"+contra+"','"+nombre+"','"+apellidos+"',0,0)";
+            await pool.query(query);
+            enviarCorreo(correo,req)
+            res.send({
+                message: 'Paciente registrado\nSe a enviado un correo para confirmar su cuenta\n(El correo podria estar en SPAM)'
+            });
+        }else
+            res.status(402).send({
+                message: 'Usuario ya registrado'
+            });
+    }else{
         res.status(402).send({
-            message: "Usuario y/o correo ya registrado"
-        });
+            message: 'Usuario ya existente'
+        })
+    }
 });
 router.post('/disponible',async (req,res) => {
     await usuarioDisponible(req);
@@ -121,10 +193,15 @@ async function usuarioDisponible(req){
 async function cuentaActivada(req){
     var query = "SELECT * FROM usuario WHERE nombreUsuario = '"+req.body.user+"'";
     var res = await pool.query(query);
-    if(res[0].verificado == 1)
-        return true;
-    else
+    if(res.length === 1){
+        if(res[0].verificado == 1)
+            return true;
+        else
+            return false;
+    }else{
         return false;
+    }
+        
 };
 async function verificar(usuario)
 {
@@ -133,7 +210,12 @@ async function verificar(usuario)
 }
 async function confirmarLogin(req){
     var query ="SELECT * FROM usuario WHERE nombreUsuario='"+req.body.user+"' AND password='"+req.body.contra+"'";
-    var res = await pool.query(query);
+    var res;
+    try{
+       res = await pool.query(query);
+    } catch(e){
+        if(e) return true;
+    }
     if(res.length === 1)
         return false;
     else
@@ -167,30 +249,6 @@ async function randomMedico(){
     return res[random].nombreUsuario;
 }
 async function addUser(req,res)
-{
-    try{
-        var existeUs = await existeUsuario(req);
-        if(existeUs === true)
-        {
-            console.log('El usuario ya ha sido registrado');
-            return true;
-        }
-        var existeCor= await existeCorreo(req); 
-        if(existeCor === true)
-        {
-            console.log('El correo ya ha sido registrado');
-            return true;
-        }else{
-            await agregarUsuario(req);
-            return false;
-        }
-    }
-    catch(e){
-        console.log(e);
-        return false;
-    }
-}
-async function agregar_verificarUser(req)
 {
     try{
         var existeUs = await existeUsuario(req);
