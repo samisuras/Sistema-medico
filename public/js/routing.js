@@ -267,34 +267,24 @@ app.controller('formRegistroPacienteController', function($scope, $http){
         });
     }
 });
-app.controller('ConsultasController', function ($scope) {
-    $scope.NombreMedico = 'Juan Cornejo';
-    $scope.consulta = [
-        {
-        paciente: 'juan',
-        fecha: '12/10/19',
-        sangre: 'oplus',
-        pulso: 15,
-        talla: 16,
-        temperatura: 17,
-        alergia: 'a la caca',
-        peso: 18,
-        presion: 19,
-        malestares: 'la caca again',
-        }, 
-        {
-        paciente: 'popo',
-        fecha: '13/10/18',
-        sangre: 'oplus',
-        pulso: 15,
-        talla: 16,
-        temperatura: 17,
-        alergia: 'a la caca',
-        peso: 18,
-        presion: 19,
-        malestares: 'la caca again',
+app.controller('ConsultasController', function ($scope,$http) {
+    $scope.traerInfoConsultas = function(){
+        var usuario = {
+            usuario: sessionStorage.getItem('usuario')
         }
-    ];
+        $http.post('/traerInfoConsultas',usuario)
+        .then(
+          function(response){
+            $scope.consulta = response.data.consultas;
+        },
+        function(response){
+            alert(response.data.message);
+            /*
+            $scope.error = true;
+            $scope.mensajeError = response.data.message;*/
+        }
+        );
+    };
     $scope.TablaConsultas = true;
     $scope.TablaFiltrada = false;
     $scope.OcultarDataFiltrada = function(){
@@ -305,16 +295,16 @@ app.controller('ConsultasController', function ($scope) {
         $scope.TablaConsultas = false;
         $scope.TablaFiltrada = true;
         $scope.dataFiltrada = [{
-            paciente:  $scope.consulta[idPaciente].paciente,
+            paciente:  $scope.consulta[idPaciente].nombreUsuario,
             fecha: $scope.consulta[idPaciente].fecha,
-            sangre: $scope.consulta[idPaciente].sangre,
-            pulso: $scope.consulta[idPaciente].pulso,
+            sangre: $scope.consulta[idPaciente].tipoSangre,
+            pulso: $scope.consulta[idPaciente].pulsoCardiaco,
             talla: $scope.consulta[idPaciente].talla,
             temperatura: $scope.consulta[idPaciente].temperatura,
-            alergia: $scope.consulta[idPaciente].alergia,
+            alergia: $scope.consulta[idPaciente].alergias,
             peso: $scope.consulta[idPaciente].peso,
-            presion: $scope.consulta[idPaciente].presion,
-            malestares: $scope.consulta[idPaciente].malestares,
+            presion: $scope.consulta[idPaciente].presionArterial,
+            malestares: $scope.consulta[idPaciente].malestar,
         }]
         
     }

@@ -27,6 +27,22 @@ router.get('/verificar/:user', async(req,res)=>{
     await verificar(req.params.user);
     res.sendfile('./public/pages/verificado.html');
 });
+router.post('/traerInfoConsultas', async (req,res)=>{
+    let {usuario} = req.body;
+    var query = "SELECT * FROM expediente_consulta WHERE userMedico='"+usuario+"'";
+    var resul = await pool.query(query);
+    if(resul.length == 0)
+    {
+        res.status(402).send({
+            message: 'No tiene consultas que mostrar'
+        })
+    }else{
+        res.send({
+            consultas: resul
+        })
+    }
+    
+})
 router.post('/addUser',async (req,res)=>{
     existeUs = await addUser(req,res);
     if(!existeUs)

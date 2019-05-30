@@ -1,22 +1,24 @@
-<section class="wow fadeInUp">
+<section ng-init="traerInfoConsultas()" class="wow fadeInUp">
     <div class="container pt-4 pb-4">
         <h1>Consultas</h1>
-        <h3>Medico: {{NombreMedico}}</h3>
+        <h3>Medic@: {{usuario}}</h3>
         <table class="table table-hover table-striped table-bordered text-center" ng-show="TablaConsultas">
             <thead>
                 <tr class="bg-info text-white">
                     <th scope="col">Paciente</th>
                     <th scope="col">Fecha</th>
                     <th scope="col">Malestar</th>
+                    <th scope="col">Video Llamada</th>
                     <th scope="col">Detalles</th>
                     <th scope="col">Terminar</th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="data in consulta">
-                    <th scope="row">{{data.paciente}}</th>
+                    <th scope="row">{{data.nombreUsuario}}</th>
                     <td>{{data.fecha}}</td>
-                    <td>{{data.malestares}}</td>
+                    <td>{{data.malestar}}</td>
+                    <td><button class="btn btn-success"><i class="fas fa-phone"></i></button></td>
                     <td><button type="button" class="btn btn-primary" ng-click="FiltrarConsulta($index)"><i
                                 class="fas fa-info-circle"></i></button></td>
                     <td><button type="button" class="btn btn-danger"><i class="fas fa-exclamation"></i></button></td>
