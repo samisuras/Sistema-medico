@@ -32,7 +32,6 @@ window.onload = function(){
     peer.on('stream', function (stream) {
       var video = document.createElement('video')
       document.body.appendChild(video)
-
       video.srcObject = stream
       video.onloadedmetadata = function(e) {
           video.play();

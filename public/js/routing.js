@@ -369,7 +369,45 @@ app.controller('videoContactosCtrl', function ($scope,$http) {
   };
 });
 app.controller('formVideo', function ($scope,$http) {
+  $scope.terminarLlamada = function(){
+    var paciente = {
+      nombrePaciente: sessionStorage.getItem('receptor'),
+      nombreMedico: sessionStorage.getItem('usuario')
+    }
+    $http.post('/agregarPaciente_Medico',paciente)
+    .then(
+      function(response){
+        var medico = {
+          usuario: sessionStorage.getItem('usuario')
+        }
+        $http.post('/borrarNotificacion',medico).then();
+        window.location.href = '/';
+      },
+      function(response){
+
+      }
+    )
+  };
 $scope.iniciar = function(){
+  if(location.hash !== '#!/videoChat#init'){
+    $http.get('/pacienteInfo/'+sessionStorage.getItem('receptor'))
+    .then(
+    function(response){
+      let {nombre,tipoSangre,alergias,malestar,peso,talla,temperatura,presion,pulso} = response.data;
+      document.getElementById('form').hidden = false;
+      $scope.name = nombre;
+      $scope.sangre = tipoSangre;
+      $scope.pulso = pulso;
+      $scope.talla = talla;
+      $scope.temperatura = temperatura;
+      $scope.alergias = alergias;
+      $scope.peso = peso;
+      $scope.presionAr = presion;
+      $scope.malestares = malestar;
+    },function(response){
+
+    }
+  )};
   (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
       var getUserMedia = require('getusermedia')
       getUserMedia({ video: true, audio: true }, function (err, stream) {
@@ -388,7 +426,7 @@ $scope.iniciar = function(){
                   stream: stream
                 })
                 if(location.hash === '#!/videoChat#init')
-                  setTimeout(()=>{document.getElementById('connect').hidden = false;},30000)
+                  setTimeout(()=>{document.getElementById('connect').hidden = false;},25000)
                 
                 peer.on('signal', function (data) {
                   document.getElementById('yourId').value = JSON.stringify(data)
@@ -398,12 +436,14 @@ $scope.iniciar = function(){
                       id: datos,
                       usuario: sessionStorage.getItem('usuario')
                     };
+                    
                     $http.post('/crearTexto',chat).then();
                   }else{
                     var chat = {
                       id: JSON.stringify(data),
                       usuario: sessionStorage.getItem('usuario')
                     };
+                    document.getElementById('disconnect').hidden = false;
                     document.getElementById('yourId').value = JSON.stringify(data)
                     $http.post('/crearTexto',chat).then();
                   }

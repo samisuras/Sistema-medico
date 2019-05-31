@@ -1,5 +1,84 @@
 <div ng-init="iniciar()">
   <div class="container pt-5">
+      <form id="form" hidden>
+          <div class="row">
+              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
+                  <label for="name">Nombre</label>
+                  <div class="input-group flex-nowrap mb-3">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text bg-light" id="addon-wrapping"><i class="fa fa-user"></i></span>
+                      </div>
+                      <input type="text" class="form-control" ng-model="name" id="name" placeholder="Nombre" disabled>
+                  </div>
+                  <label for="sangre">Sangre</label>
+                  <div class="input-group flex-nowrap mb-3">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-ad"></i></span>
+                      </div>
+                      <input type="text" class="form-control" ng-model="sangre" id="sangre" placeholder="Tipo de Sangre" disabled>
+                  </div>
+                  <label for="pulso">Pulso</label>
+                  <div class="input-group flex-nowrap mb-3">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text bg-light" id="addon-wrapping"><i
+                                  class="fas fa-syringe"></i></i></span>
+                      </div>
+                      <input type="number" class="form-control" ng-model="pulso" id="pulso" placeholder="Pulso Cardiaco" disabled>
+                  </div>
+              </div>
+              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
+                  <label for="talla">Talla</label>
+                  <div class="input-group flex-nowrap mb-3">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-user"></i></span>
+                      </div>
+                      <input type="number" class="form-control" ng-model="talla" id="talla" placeholder="Talla" disabled>
+                  </div>
+                  <label for="temperatura">Temperatura</label>
+                  <div class="input-group flex-nowrap mb-3">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text bg-light" id="addon-wrapping"><i
+                                  class="fas fa-temperature-low"></i></span>
+                      </div>
+                      <input type="number" class="form-control" ng-model="temperatura" id="temperatura"
+                          placeholder="Temperatura" disabled>
+                  </div>
+                  <label for="Alergias">Alergias</label>
+                  <div class="input-group flex-nowrap mb-3">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text bg-light" id="addon-wrapping"><i
+                                  class="fas fa-user-nurse"></i></span>
+                      </div>
+                      <textarea ng-model="alergias" rows="4" cols="50" placeholder="Alergias" disabled></textarea>
+                  </div>
+              </div>
+              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
+                  <label for="peso">Peso</label>
+                  <div class="input-group flex-nowrap mb-3">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-user"></i></span>
+                      </div>
+                      <input type="number" class="form-control" ng-model="peso" id="peso" placeholder="Peso (kg)" disabled>
+                  </div>
+                  <label for="presionAr">Presion Arterial</label>
+                  <div class="input-group flex-nowrap mb-3">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text bg-light" id="addon-wrapping"><i
+                                  class="fas fa-syringe"></i></span>
+                      </div>
+                      <input type="number" class="form-control" ng-model="presionAr" id="presionAr"
+                          placeholder="Presion Arterial" disabled>
+                  </div>
+                  <label for="Malestares">Malestares</label>
+                  <div class="input-group flex-nowrap mb-3">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-user-nurse"></i></span>
+                      </div>
+                      <textarea ng-model="malestares" rows="4" cols="50" placeholder="Malestares" disabled></textarea>
+                  </div>
+              </div>
+          </div>
+      </form>
     <div class="row">
       <div class="col-xl-4" align="center"><br><br><br>
         <div class="col-xl-12 text-white bg-dark row wow fadeInLeft">
@@ -15,7 +94,7 @@
             <h1 class="h1">Su video</h1>
           </div>
           <div class="col-xl-3 mt-2">
-              <button class="btn btn-danger btn-block btn-sm"><i class="fas fa-video-slash mr-2"></i>Disconnect</button><br />
+              <button class="btn btn-danger btn-block btn-sm" ng-click="terminarLlamada()" id="disconnect" hidden><i class="fas fa-video-slash mr-2"></i>Disconnect</button><br />
           </div>
         </div>
         <video width="100%" height="auto" id="videoSuyo" controls autoplay class="wow fadeInUp"></video>

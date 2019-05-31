@@ -6,6 +6,23 @@ const path = require('path');
 router.get('/',(req,res) => {
     res.sendfile('./public/routing.html');
 });
+router.get('/pacienteInfo/:usuario', async (req,res)=>{
+    let usuario = req.params.usuario;
+    var query = "SELECT * FROM expediente_consulta WHERE nombreUsuario = '"+usuario+"'";
+    let resul = await pool.query(query);
+    res.send({
+        nombre: resul[0].nombreUsuario,
+        fecha: resul[0].fecha,
+        tipoSangre: resul[0].tipoSangre,
+        alergias: resul[0].alergias,
+        malestar: resul[0].malestar,
+        peso: resul[0].peso,
+        talla: resul[0].talla,
+        temperatura: resul[0].temperatura,
+        presion: resul[0].presionArterial,
+        pulso: resul[0].pulsoCardiaco
+    });
+});
 router.get('/llamador/:usuario', async(req,res)=>{
     var {usuario} = req.params;
     var query = "SELECT * FROM notificacion WHERE nombreUsuario = '"+usuario+"'";
@@ -41,6 +58,14 @@ router.get('/notificaciones/:usuario', async (req,res)=>{
             llamada: 1
         });
     }
+});
+router.post('/agregarPaciente_Medico', async (req,res)=>{
+    let {nombrePaciente,nombreMedico} = req.body;
+    var query = "UPDATE expediente_consulta SET userMedico = '"+nombreMedico+"' WHERE nombreUsuario = '"+nombrePaciente+"'";
+    await pool.query(query);
+    res.send({
+        message: 'todo bien'
+    })
 });
 router.post('/borrarNotificacion',async (req,res)=>{
     let {usuario} = req.body;
@@ -232,21 +257,13 @@ async function addExConsulta(req){
         var peso = req.body.peso;
         var presion = req.body.presion;
         var malestares = req.body.malestares;
-
-        var userMedico = await randomMedico();
         
-        var query = "INSERT INTO expediente_consulta (nombreUsuario,fecha,tipoSangre,alergias,malestar,peso,talla,temperatura,presionArterial,pulsoCardiaco,userMedico) VALUES ('"+usuario+"',NOW(),'"+sangre+"','"+alergias+"','"+malestares+"',"+peso+","+talla+","+temperatura+","+presion+","+pulso+",'"+userMedico+"');";
+        var query = "INSERT INTO expediente_consulta (nombreUsuario,fecha,tipoSangre,alergias,malestar,peso,talla,temperatura,presionArterial,pulsoCardiaco) VALUES ('"+usuario+"',NOW(),'"+sangre+"','"+alergias+"','"+malestares+"',"+peso+","+talla+","+temperatura+","+presion+","+pulso+");";
         pool.query(query);
     } catch(e){
         console.log(e);
         return;
     }
-}
-async function randomMedico(){
-    var query = "SELECT * FROM medico";
-    var res = await pool.query(query);
-    var random = Math.floor(Math.random() * res.length);
-    return res[random].nombreUsuario;
 }
 async function addUser(req,res)
 {

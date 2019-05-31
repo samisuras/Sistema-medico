@@ -2,6 +2,7 @@
     <div class="container pt-4 pb-4">
         <h1>Consultas:</h1>
         <h3>{{usuario}}</h3>
+        <h3 ng-show="TablaFiltrada">Datos de la consulta</h3>
         <table class="table table-hover table-striped table-bordered text-center" ng-show="TablaConsultas">
             <thead>
                 <tr class="bg-info text-white">
@@ -52,6 +53,7 @@
                 </tr>
             </tbody>
         </table>
+        <h3>Datos personales del paciente</h3>
         <button type="button" class="btn btn-success btn-sm text-center wow fadeInRight" ng-show="TablaFiltrada"
             ng-click="OcultarDataFiltrada()"><i class="fas fa-undo-alt mr-2"></i></i>Regresar</button>
 

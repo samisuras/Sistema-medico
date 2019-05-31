@@ -29,4 +29,3 @@ pool.getConnection( (err,conn) => {
 pool.query = util.promisify(pool.query);
 
 module.exports = pool;
-
