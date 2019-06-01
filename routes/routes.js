@@ -6,6 +6,17 @@ const path = require('path');
 router.get('/',(req,res) => {
     res.sendfile('./public/routing.html');
 });
+router.get('/datosUsuario/:usuario', async (req,res)=>{
+    let {usuario} = req.params;
+    var query = "SELECT * FROM usuario WHERE nombreUsuario = '"+usuario+"'";
+    let resul = await pool.query(query);
+    res.send({
+        nombre: resul[0].nombres,
+        correo: resul[0].email,
+        apellido: resul[0].apellidos,
+        usuario: resul[0].nombreUsuario
+    })
+});
 router.get('/pacienteInfo/:usuario', async (req,res)=>{
     let usuario = req.params.usuario;
     var query = "SELECT * FROM expediente_consulta WHERE nombreUsuario = '"+usuario+"'";

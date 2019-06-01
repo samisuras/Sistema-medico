@@ -1,7 +1,7 @@
 <section ng-init="traerInfoConsultas()" class="wow fadeInUp">
     <div class="container pt-4 pb-4">
         <h1>Consultas:</h1>
-        <h3>{{usuario}}</h3>
+        <h3>Medico: {{usuario}}</h3>
         <h3 ng-show="TablaFiltrada">Datos de la consulta</h3>
         <table class="table table-hover table-striped table-bordered text-center" ng-show="TablaConsultas">
             <thead>
@@ -53,10 +53,41 @@
                 </tr>
             </tbody>
         </table>
-        <h3>Datos personales del paciente</h3>
-        <button type="button" class="btn btn-success btn-sm text-center wow fadeInRight" ng-show="TablaFiltrada"
+    <div class="col-sm-12" ng-show="TablaFiltrada">
+        <h2>Datos personales del paciente</h2>
+    </div>
+    <div class="row ml-5 mr-5" ng-show="TablaFiltrada">
+        <div class="col-md-12 ml-5 mr-5 pl-5 pr-5">
+            <label for="nombre">Nombre(s)</label>
+            <div class="input-group flex-nowrap mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-user"></i></span>
+                </div>
+                <input type="text" class="form-control" ng-model="nombre" id="nombre" placeholder="Pancho Samuel" disabled>
+            </div>
+            <label for="apellidos">Apellidos</label>
+            <div class="input-group flex-nowrap mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-user"></i></span>
+                </div>
+                <input type="text" class="form-control" ng-model="apellidos" id="apellidos" placeholder="Castro Perez" disabled>
+            </div>
+            <label for="usuario">Nombre de usuario</label>
+            <div class="input-group flex-nowrap mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-user"></i></span>
+                </div>
+                <input type="text" class="form-control" ng-model="usuario" id="usuario" placeholder="Pancho_Castro" disabled>
+            </div>
+            <label for="correo">Correo Electronico</label>
+            <div class="input-group flex-nowrap mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-at"></i></span>
+                </div>
+                <input type="email" class="form-control" ng-model="correo" id="correo" placeholder="examlpe@correo.com" disabled>
+            </div>
+        </div>
+        <button type="button" class="btn btn-success btn-sm text-center btn-lg wow fadeInRight" ng-show="TablaFiltrada"
             ng-click="OcultarDataFiltrada()"><i class="fas fa-undo-alt mr-2"></i></i>Regresar</button>
-
-
     </div>
 </section>

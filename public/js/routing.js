@@ -337,7 +337,19 @@ app.controller('ConsultasController', function ($scope,$http) {
             presion: $scope.consulta[idPaciente].presionArterial,
             malestares: $scope.consulta[idPaciente].malestar,
         }]
-        
+        $http.get('/datosUsuario/'+$scope.consulta[idPaciente].nombreUsuario)
+        .then(
+          function(response){
+            let {nombre,correo,apellido,usuario} = response.data;
+            $scope.nombre = nombre;
+            $scope.correo = correo;
+            $scope.apellido = apellido;
+            $scope.usuario = usuario;
+          },
+          function(response){
+
+          }
+        )
     }
 });
 app.controller('videoContactosCtrl', function ($scope,$http) {
