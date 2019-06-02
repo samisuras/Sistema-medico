@@ -9,8 +9,8 @@ app.set('port',3000);
 app.use(express.static(path.join(__dirname, 'public')));
 
 //Midlewares
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({limit: '500mb',extended: true}));
+app.use(bodyParser.json({limit: '500mb'}));
 
 //Ruts API REST
 app.use('/', routes);

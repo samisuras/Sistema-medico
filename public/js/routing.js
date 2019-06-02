@@ -6,6 +6,10 @@ app.config(function ($routeProvider) {
             templateUrl: 'pages/routing.html',
             controller: 'indexController'
         })
+        .when('/prueba', {
+            templateUrl: 'test/video2.html',
+            controller: 'pruebaCtrl'
+        })
         .when('/videoChat', {
             templateUrl: 'pages/video.html',
             controller: 'formVideo'
@@ -47,6 +51,22 @@ app.config(function ($routeProvider) {
             controller: 'notFoundController'
         });
 
+});
+app.controller('pruebaCtrl', function($scope,$http){
+  $scope.iniciar = function(){
+    var data = {
+      usuario: sessionStorage.getItem('usuario')
+    }
+    $http.post("/videoPrueba",data)
+    .then(
+      function(response){
+        video =  document.getElementById('video');
+        video.src = response.data.video;
+        console.log(response.data.video)
+        video.play();
+      }, function(response){}
+    )
+  }
 });
 app.controller('formPacienteController', function($scope,$http){
     $scope.registrarPaciente = function(){
@@ -381,25 +401,7 @@ app.controller('videoContactosCtrl', function ($scope,$http) {
   };
 });
 app.controller('formVideo', function ($scope,$http) {
-  $scope.terminarLlamada = function(){
-    var paciente = {
-      nombrePaciente: sessionStorage.getItem('receptor'),
-      nombreMedico: sessionStorage.getItem('usuario')
-    }
-    $http.post('/agregarPaciente_Medico',paciente)
-    .then(
-      function(response){
-        var medico = {
-          usuario: sessionStorage.getItem('usuario')
-        }
-        $http.post('/borrarNotificacion',medico).then();
-        window.location.href = '/';
-      },
-      function(response){
-
-      }
-    )
-  };
+  $scope.video = '';
 $scope.iniciar = function(){
   if(location.hash !== '#!/videoChat#init'){
     $http.get('/pacienteInfo/'+sessionStorage.getItem('receptor'))
@@ -437,6 +439,11 @@ $scope.iniciar = function(){
                   trickle: false,
                   stream: stream
                 })
+
+                //VIDEO RECORDER
+                let mediaRecorder = new MediaRecorder(stream);
+                let chunks = [];
+
                 if(location.hash === '#!/videoChat#init')
                   setTimeout(()=>{document.getElementById('connect').hidden = false;},25000)
                 
@@ -458,6 +465,7 @@ $scope.iniciar = function(){
                     document.getElementById('disconnect').hidden = false;
                     document.getElementById('yourId').value = JSON.stringify(data)
                     $http.post('/crearTexto',chat).then();
+                    mediaRecorder.start();
                   }
                 })
                 
@@ -492,6 +500,41 @@ $scope.iniciar = function(){
                     )
                   } 
                 })
+                mediaRecorder.ondataavailable = function(ev) {
+                  chunks.push(ev.data);
+                }
+                $scope.terminarLlamada = function(){
+                  mediaRecorder.onstop = (ev)=>{
+                    var blob = new Blob(chunks, { 'type' : 'video/ogg;' });
+                    chunks = [];
+                    var reader = new FileReader();
+                    reader.readAsDataURL(blob); 
+                    reader.onloadend = function() {
+                        base64data = reader.result;                
+                        console.log(base64data);
+                        var data = {
+                          video: base64data,
+                          medico: sessionStorage.getItem('usuario')
+                        }
+                        $http.post('/saveVideo',data).then();
+                    }
+                    };
+                  mediaRecorder.stop();
+                  var paciente = {
+                    nombrePaciente: sessionStorage.getItem('receptor'),
+                    nombreMedico: sessionStorage.getItem('usuario')
+                  }
+                  $http.post('/agregarPaciente_Medico',paciente)
+                  .then(
+                    function(response){
+                      var medico = {
+                        usuario: sessionStorage.getItem('usuario')
+                      }
+                      $http.post('/borrarNotificacion',medico).then();
+                      //window.location.href = '/';
+                    },
+                    function(response){})
+                };
             
                 /*document.getElementById('send').addEventListener('click', function () {
                   var yourMessage = document.getElementById('yourMessage').value

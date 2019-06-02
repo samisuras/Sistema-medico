@@ -10,6 +10,7 @@
                     <th scope="col">Fecha</th>
                     <th scope="col">Malestar</th>
                     <th scope="col">Detalles</th>
+                    <th scope="col">Emitir <br>Receta</th>
                 </tr>
             </thead>
             <tbody>
@@ -19,6 +20,7 @@
                     <td>{{data.malestar}}</td>
                     <td><button type="button" class="btn btn-primary" ng-click="FiltrarConsulta($index)"><i
                                 class="fas fa-info-circle"></i></button></td>
+                    <td><a class="btn btn-danger" href="#!recetaMedica"><i class="fas fa-file-medical text-light"></i></a></td>
                 </tr>
             </tbody>
         </table>

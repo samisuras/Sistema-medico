@@ -1,10 +1,23 @@
 const router = require('express').Router();
 const pool = require('../db/conection');
 const mail = require('../server/mails');
+const multer = require('multer');
+const upload = multer();
 const path = require('path');
 //RUTAS
 router.get('/',(req,res) => {
     res.sendfile('./public/routing.html');
+});
+router.post('/videoPrueba', async (req,res) =>{
+    console.log('pase');
+    console.log(req.body);
+    const fs = require('fs');
+    var {usuario} = req.body;
+    let data = fs.readFileSync("./db/video/"+usuario+".txt");
+    texto = data.toString();
+    res.send({
+        video: texto
+    })
 });
 router.get('/datosUsuario/:usuario', async (req,res)=>{
     let {usuario} = req.params;
@@ -55,12 +68,12 @@ router.get('/verificar/:user', async(req,res)=>{
 });
 router.get('/notificaciones/:usuario', async (req,res)=>{
     let {usuario} = req.params;
-    var query = "SELECT * FROM notificacion WHERE nombreUsuario = '"+usuario+"'";
+    var query = "SELECT * FROM notificacion  WHERE nombreUsuario = '"+usuario+"'";
     let resul = await pool.query(query);
     if(resul.length == 0)
     {
         //no hay notificaciones
-        res.status(401).send({
+        res.status(402).send({
             message: 'no hay notificaciones'
         })
     }else{
@@ -69,6 +82,14 @@ router.get('/notificaciones/:usuario', async (req,res)=>{
             llamada: 1
         });
     }
+});
+router.post('/saveVideo', upload.any() ,async (req,res)=>{
+    let {video,medico} = req.body;
+    const fs = require('fs');
+    fs.writeFileSync("./db/video/"+medico+".txt",video);
+    res.send({
+        message: 'Todo bien'
+    });
 });
 router.post('/agregarPaciente_Medico', async (req,res)=>{
     let {nombrePaciente,nombreMedico} = req.body;
