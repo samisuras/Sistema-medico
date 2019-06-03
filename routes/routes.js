@@ -8,12 +8,10 @@ const path = require('path');
 router.get('/',(req,res) => {
     res.sendfile('./public/routing.html');
 });
-router.post('/videoPrueba', async (req,res) =>{
-    console.log('pase');
-    console.log(req.body);
+router.get('/videoPrueba/:usuario', async (req,res) =>{
     const fs = require('fs');
-    var {usuario} = req.body;
-    let data = fs.readFileSync("./db/video/"+usuario+".txt");
+    var {usuario} = req.params;
+    let data = fs.readFileSync("./db/video/"+usuario+"/"+usuario+".txt");
     texto = data.toString();
     res.send({
         video: texto
@@ -86,7 +84,13 @@ router.get('/notificaciones/:usuario', async (req,res)=>{
 router.post('/saveVideo', upload.any() ,async (req,res)=>{
     let {video,medico} = req.body;
     const fs = require('fs');
-    fs.writeFileSync("./db/video/"+medico+".txt",video);
+    var dir = './db/video/'+medico;
+    if(!fs.existsSync(dir)){
+        fs.mkdirSync(dir);
+        fs.writeFileSync("./db/video/"+medico+"/"+medico+".txt",video);
+    }else{
+        fs.writeFileSync("./db/video/"+medico+"/"+medico+".txt",video);
+    }
     res.send({
         message: 'Todo bien'
     });

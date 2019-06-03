@@ -6,10 +6,6 @@ app.config(function ($routeProvider) {
             templateUrl: 'pages/routing.html',
             controller: 'indexController'
         })
-        .when('/prueba', {
-            templateUrl: 'test/video2.html',
-            controller: 'pruebaCtrl'
-        })
         .when('/videoChat', {
             templateUrl: 'pages/video.html',
             controller: 'formVideo'
@@ -51,22 +47,6 @@ app.config(function ($routeProvider) {
             controller: 'notFoundController'
         });
 
-});
-app.controller('pruebaCtrl', function($scope,$http){
-  $scope.iniciar = function(){
-    var data = {
-      usuario: sessionStorage.getItem('usuario')
-    }
-    $http.post("/videoPrueba",data)
-    .then(
-      function(response){
-        video =  document.getElementById('video');
-        video.src = response.data.video;
-        console.log(response.data.video)
-        video.play();
-      }, function(response){}
-    )
-  }
 });
 app.controller('formPacienteController', function($scope,$http){
     $scope.registrarPaciente = function(){
@@ -370,6 +350,24 @@ app.controller('ConsultasController', function ($scope,$http) {
 
           }
         )
+        $http.get('/videoPrueba/'+sessionStorage.getItem('usuario'))
+        .then(
+          function(response){
+            video =  document.getElementById('medico');
+            video.src = response.data.video;
+            video.play();
+          }
+          ,function(response){}
+        )
+        $http.get('/videoPrueba/'+$scope.consulta[idPaciente].nombreUsuario)
+        .then(
+          function(response){
+            video =  document.getElementById('paciente');
+            video.src = response.data.video;
+            video.play();
+          }
+          ,function(response){}
+        )
     }
 });
 app.controller('videoContactosCtrl', function ($scope,$http) {
@@ -403,6 +401,8 @@ app.controller('videoContactosCtrl', function ($scope,$http) {
 app.controller('formVideo', function ($scope,$http) {
   $scope.video = '';
 $scope.iniciar = function(){
+  var bandera = true;
+  var mediaPaciente;
   if(location.hash !== '#!/videoChat#init'){
     $http.get('/pacienteInfo/'+sessionStorage.getItem('receptor'))
     .then(
@@ -442,7 +442,9 @@ $scope.iniciar = function(){
 
                 //VIDEO RECORDER
                 let mediaRecorder = new MediaRecorder(stream);
+                
                 let chunks = [];
+                let chunksPac = [];
 
                 if(location.hash === '#!/videoChat#init')
                   setTimeout(()=>{document.getElementById('connect').hidden = false;},25000)
@@ -466,6 +468,7 @@ $scope.iniciar = function(){
                     document.getElementById('yourId').value = JSON.stringify(data)
                     $http.post('/crearTexto',chat).then();
                     mediaRecorder.start();
+                    
                   }
                 })
                 
@@ -503,6 +506,7 @@ $scope.iniciar = function(){
                 mediaRecorder.ondataavailable = function(ev) {
                   chunks.push(ev.data);
                 }
+                
                 $scope.terminarLlamada = function(){
                   mediaRecorder.onstop = (ev)=>{
                     var blob = new Blob(chunks, { 'type' : 'video/ogg;' });
@@ -518,8 +522,9 @@ $scope.iniciar = function(){
                         }
                         $http.post('/saveVideo',data).then();
                     }
-                    };
+                  };
                   mediaRecorder.stop();
+                  mediaPaciente.stop();
                   var paciente = {
                     nombrePaciente: sessionStorage.getItem('receptor'),
                     nombreMedico: sessionStorage.getItem('usuario')
@@ -544,8 +549,32 @@ $scope.iniciar = function(){
                 peer.on('data', function (data) {
                   document.getElementById('messages').textContent += data + '\n'
                 })
-            
+              
                 peer.on('stream', function (stream) {
+                  if(bandera == true){
+                    bandera = false;
+                    mediaPaciente = new MediaRecorder(stream);
+                    mediaPaciente.onstop = (ev)=>{
+                      var blob = new Blob(chunksPac, { 'type' : 'video/ogg;' });
+                      chunksPac = [];
+                      var reader = new FileReader();
+                      reader.readAsDataURL(blob); 
+                      reader.onloadend = function() {
+                          base64data = reader.result;                
+                          console.log(base64data);
+                          var data = {
+                            video: base64data,
+                            medico: sessionStorage.getItem('receptor')
+                          }
+                          $http.post('/saveVideo',data).then();
+                      }
+                    };
+                    mediaPaciente.ondataavailable = function(ev) {
+                      chunksPac.push(ev.data);
+                    }
+                    mediaPaciente.start();
+                  }
+                  
                   var video = document.getElementById('videoSuyo')
                   video.srcObject = stream
                   video.onloadedmetadata = function(e) {
