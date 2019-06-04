@@ -8,6 +8,61 @@ const path = require('path');
 router.get('/',(req,res) => {
     res.sendfile('./public/routing.html');
 });
+router.get('/usuarios/sangre', async (req,res) => {
+    var query = "SELECT tipoSangre FROM expediente_consulta";
+    let resul = await pool.query(query);
+    sangre = [];
+    for(let i=0;i<resul.length;i++){
+        sangre[i] = resul[i].tipoSangre;
+    }
+    res.send({
+        sangre: sangre
+    });
+});
+router.get('/usuarios/userMedico', async(req,res) =>{
+    var query = "SELECT userMedico FROM expediente_consulta";
+    let resul = await pool.query(query);
+    datos = [];
+    resul.forEach((e)=>{
+        datos.push(e.userMedico);
+    });
+    res.send({
+        datos: datos
+    });
+});
+router.get('/usuarios/malestar', async(req,res) =>{
+    var query = "SELECT malestar FROM expediente_consulta";
+    let resul = await pool.query(query);
+    datos = [];
+    resul.forEach((e)=>{
+        datos.push(e.malestar);
+    });
+    res.send({
+        datos: datos
+    });
+});
+router.get('/usuarios/especialidad', async(req,res)=>{
+    var query = "SELECT especialidad FROM medico";
+    let resul = await pool.query(query);
+    datos = [];
+    resul.forEach((e)=>{
+        datos.push(e.especialidad);
+    });
+    res.send({
+        datos: datos
+    });
+})
+router.get('/usuarios/talla', async(req,res)=>{
+    var query = "SELECT talla FROM expediente_consulta"
+    var resul = await pool.query(query);
+    talla = [];
+    for(let i=0;i<resul.length;i++){
+        talla[i] = resul[i].talla;
+    }
+    res.send({
+        talla: talla
+    })
+});
 router.get('/videoPrueba/:usuario', async (req,res) =>{
     const fs = require('fs');
     var {usuario} = req.params;
