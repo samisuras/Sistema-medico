@@ -1,0 +1,26 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12" align="center"> <h1>Estadísticos de Global-Medic</h1> </div>
+        <div class="col-sm-12" align="center">(Midiendo para mejorar)</div>
+    </div>
+    <div class="row mt-3 mt-5 mb-5">
+        <div class="col-sm-5">
+            <label for="graficos"><b>Elija el gráfico a mostrar</b></label>
+            <select ng-model="item" ng-change="update()" id="graficos" class="form-control">
+                <option default selected value="sangre">Tipo de sangre de pacientes</option>
+                <option value="talla">Talla de pacientes</option>
+                <option value="medico">Consultas por médico</option>
+                <option value="malestar">Malestares de pacientes</option>
+                <option value="especialidad">Especialidades de Medicos</option>
+            </select>
+        </div>
+    </div>
+
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div id="chart_div" align="center"></div>
+        </div>
+    </div>
+</div>
+

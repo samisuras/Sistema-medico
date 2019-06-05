@@ -6,6 +6,14 @@ app.config(function ($routeProvider) {
             templateUrl: 'pages/routing.html',
             controller: 'indexController'
         })
+        .when('/form/recetaMedica', {
+          templateUrl: 'pages/formReceta.html',
+          controller: 'formRecetaCtrl'
+        })
+        .when('/graficas', {
+          templateUrl: 'pages/graficas.html',
+          controller: 'graficaCtrl'
+        })
         .when('/videoChat', {
             templateUrl: 'pages/video.html',
             controller: 'formVideo'
@@ -51,6 +59,227 @@ app.config(function ($routeProvider) {
             controller: 'notFoundController'
         });
 
+});
+app.controller('formRecetaCtrl', function($scope,$http) {
+  
+});
+app.controller('graficaCtrl', function($scope,$http) {
+  Array.prototype.unique=function(a){
+    return function(){return this.filter(a)}}(function(a,b,c){return c.indexOf(a,b+1)<0
+  });
+  function cuentaVecPos(datos){
+    var cuenta = [];
+    var contador = 0;
+    var valor = datos[0];
+    for(let i=0;i<datos.length;i++)
+    {
+      if(valor == datos[i]){
+        contador++;
+      }else{
+        cuenta.push(contador);
+        contador = 0;
+        valor = datos[i];
+        contador++;
+      }
+    }
+    cuenta.push(contador);
+    return cuenta;
+  }
+  $scope.update = function(){
+    switch($scope.item){
+      case 'sangre':
+        graficaSangre();
+        break;
+      case 'talla':
+        graficaTalla();
+        break;
+      case 'medico':
+          graficaMedico();
+          break;
+      case 'malestar': 
+        graficaMalestar();  
+        break;
+      case 'especialidad':
+        graficaEspecialidad();
+          break;
+    }
+  }
+  function graficaSangre(){
+    
+    $http.get('/usuarios/sangre')
+    .then(
+      function(res){
+      // Load the Visualization API and the corechart package.
+      google.charts.load('current', {'packages':['corechart']});
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.charts.setOnLoadCallback(drawChart);
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      function drawChart() {
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Tipo de sangre');
+        data.addColumn('number', 'Personas con ese tipo de sangre');
+        var datos = [];
+        datos = res.data.sangre;
+        datos = datos.sort();
+        var sinRep = datos.unique();
+        var cuentaPos = cuentaVecPos(datos);
+        console.log(datos);
+        console.log(sinRep);
+        console.log(cuentaPos);
+        //var datoasda = [[formatData[0][0], formatData[0].length],[formatData[1][0], formatData[1].length]];
+        var rows = [];
+        for(let i=0;i<sinRep.length;i++)
+            rows.push([sinRep[i].toString(),cuentaPos[i]]);
+        data.addRows(rows);
+
+        // Set chart options
+        var options = {'title':'Tipo de sangre de pacientes',
+                        'width':600,
+                        'height':500};
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    }
+  )}
+  function graficaTalla(){
+    $http.get('/usuarios/talla')
+    .then(
+      function(res){
+         // Load the Visualization API and the corechart package.
+      google.charts.load('current', {'packages':['corechart']});
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.charts.setOnLoadCallback(drawChart);
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      function drawChart() {
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Talla de pacinetes');
+        data.addColumn('number', 'Pacientes con esta talla');
+        var datos = [];
+        datos = res.data.talla;
+        datos = datos.sort();
+        var sinRep = datos.unique();
+        var cuentaPos = cuentaVecPos(datos);
+        console.log(datos);
+        console.log(sinRep);
+        console.log(cuentaPos);
+        //var datoasda = [[formatData[0][0], formatData[0].length],[formatData[1][0], formatData[1].length]];
+        var rows = [];
+        for(let i=0;i<sinRep.length;i++)
+            rows.push([sinRep[i].toString(),cuentaPos[i]]);
+        data.addRows(rows);
+
+        // Set chart options
+        var options = {'title':'Tallas de pacientes',
+                        'width':600,
+                        'height':500};
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+    }
+  }
+  )}
+  function graficaMedico(){
+    $http.get('/usuarios/userMedico')
+    .then(
+      function(res){
+        google.charts.load("current", {packages:["corechart"]});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+// Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Medico');
+        data.addColumn('number', 'Numero de consultas');
+        var datos = [];
+        datos = res.data.datos;
+        datos = datos.sort();
+        var sinRep = datos.unique();
+        var cuentaPos = cuentaVecPos(datos);
+        var rows = [];
+        for(let i=0;i<sinRep.length;i++)
+            rows.push([sinRep[i].toString(),cuentaPos[i]]);
+        data.addRows(rows);
+        // Set chart options
+        var options = {'title':'Tallas de pacientes',
+                        'width':600,
+                        'height':500};
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    }
+  )}
+  function graficaMalestar(){
+    $http.get('usuarios/malestar')
+    .then(
+      function(res){
+        google.charts.load("current", {packages:["corechart"]});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Malestares');
+        data.addColumn('number', 'Pacientes reportados');
+        var datos = [];
+        datos = res.data.datos;
+        datos = datos.sort();
+        var sinRep = datos.unique();
+        var cuentaPos = cuentaVecPos(datos);
+        var rows = [];
+        for(let i=0;i<sinRep.length;i++)
+            rows.push([sinRep[i].toString(),cuentaPos[i]]);
+        data.addRows(rows);
+        // Set chart options
+        var options = {'title':'Malestares presentados en pacientes',
+                        'width':600,
+                        'height':500};
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+        }
+      }
+    )
+  }
+  function graficaEspecialidad(){
+    $http.get('/usuarios/especialidad')
+    .then(
+      function(res){
+        google.charts.load("current", {packages:["corechart"]});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Especialidad');
+        data.addColumn('number', 'Medicos con essa especialidad reportados');
+        var datos = [];
+        datos = res.data.datos;
+        datos = datos.sort();
+        var sinRep = datos.unique();
+        var cuentaPos = cuentaVecPos(datos);
+        var rows = [];
+        for(let i=0;i<sinRep.length;i++)
+            rows.push([sinRep[i].toString(),cuentaPos[i]]);
+        data.addRows(rows);
+        // Set chart options
+        var options = {'title':'Especialidad de los medicos',
+                        'width':600,
+                        'height':500};
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+        }
+      }
+    )
+  }
 });
 app.controller('formPacienteController', function($scope,$http){
     $scope.registrarPaciente = function(){
@@ -307,6 +536,9 @@ app.controller('formRegistroPacienteController', function($scope, $http){
     }
 });
 app.controller('ConsultasController', function ($scope,$http) {
+    $scope.formReceta = function(paciente){
+      sessionStorage.setItem('pacienteReceta',paciente);
+    }
     $scope.traerInfoConsultas = function(){
         var usuario = {
             usuario: sessionStorage.getItem('usuario')

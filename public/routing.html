@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html ng-app="app">
-
 <head>
     <meta charset="utf-8">
     <title>Atención Médica en Línea</title>
@@ -29,12 +28,12 @@
 	<link rel="stylesheet" type="text/css" href="//css/loginuntil.css">
 	<link rel="stylesheet" type="text/css" href="//css/login.css">
 
-
     <link href="css/style.css" rel="stylesheet">
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
     <script src="./js/routing.js"></script>
+    
 </head>
 
 <body id="body" ng-controller="indexController">
@@ -60,8 +59,12 @@
 
             <nav id="nav-menu-container">
                 <ul class="nav-menu">
+<<<<<<< HEAD
                     <li ng-if="privilegio == 2 "><a href="#!HistorialConsultas">Historial de Consultas</a></li>
                     <li><a href="#!receta">Receta</a></li>
+=======
+                    <li ng-if="privilegio == 2"><a href="#!HistorialConsultas">Historial de Consultas</a></li>
+>>>>>>> 0fbefcda6079b7ece70bc205b0fdce4c99d980eb
                     <!--<li ng-if="privilegio == 0"><a href="#!HistorialConsultasPaciente">Historial de Consultas</a></li>-->
                     <li ng-if="usuario == 'root'"><a href="#!form1" ng-click="ocultar()">Registro Personal</a></li>
                     <li ng-if="privilegio == 2"><a href="#!formPaciente">Registrar consulta</a></li>
@@ -72,7 +75,7 @@
                     <li ><a ng-if="!usuario" href="#!Login" ng-click="ocultar()">Iniciar Sesión</a></li>
                     <li ng-if="usuario"><a href="#" ng-click="cerrarSesion()">Cerrar Sesion</a></li>
                     <li ng-if="privilegio == 0"><a href="#!videoContactos">Video Consulta</a></li>
-                    <li><a href="#!videos">video</a></li>
+                    <li ng-if="privilegio == 2"><a href="#!graficas">Gráficas y<br>Estadísticos</a></li>
                 </ul>
             </nav><!-- #nav-menu-container -->
         </div>
@@ -130,7 +133,8 @@
 
     <script src="js/main.js"></script>
     <script src="js/login.js"></script>
-
+    <!--Google Charts-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </body>
 
 </html>
