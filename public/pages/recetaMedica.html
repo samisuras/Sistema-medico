@@ -1,61 +1,53 @@
-<div class="mt-5">
-    <div class="container" style="border-bottom: dotted; color: blue">
+<div class="mt-5" ng-init="crearReceta()" id="exportthis">
+    <div class="container" style="border-bottom: dotted;">
         <div class="row">
             <div class="col-xl-12 text-center text-dark">
-                <h5 class="h5">Medico General Pedro Romero</h5>
-                <h5 class="h5">Cedula Profesional 01234x</h5>
-                <h5 class="h5">Universidad Nacional Autonoma De Mexico</h5>
+                <h5 class="h5">Medico {{especialidad}} {{medico}}</h5>
+                <h5 class="h5">Cedula Profesional: {{cedula}} </h5>
+                <h5 class="h5">Universidad Autonoma De Aguascalientes</h5>
                 <h5 class="h5">Torres Nuevas #84, Col. Esperanza Del Benito JuareZ C.P.00985</h5>
                 <h5 class="h5">Tel: 496-118-54-57</h5>
             </div>
         </div>
     </div>
-
     <div class="container text-justify portada">
         <div class="row border m-2">
             <div class="col-xl-6 border">
-                <p><strong>Nombre:</strong> Juan Cornejo</p>
+                <p><strong>Nombre:</strong>{{nombre}}</p>
             </div>
             <div class="col-xl-6 border">
-                <p><strong>Fecha:</strong> 18 de abril del 2018</p>
+                <p><strong>Fecha:</strong>{{fecha}}</p>
             </div>
             <div class="col-xl-12 border">
-                <p><strong>Edad:</strong> 43 anos</p>
+                <p><strong>Edad:</strong>{{edad}}</p>
             </div>
             <div class="col-xl-4 border">
-                <p class="mt-5"><strong>Sexo:</strong> Masculino</p>
-            </div>
-            <div class="col-xl-8 border">
-                <p><strong>Comoxan.Receta con 250 tabletas. Tomas una tableta cada 8 horas. Lorem ipsum dolor sit amet
-                        consectetur adipisicing elit. Veniam, tenetur reprehe borernderit fuga, optio suscipit debitis
-                        voluptatibus
-                        illo autem, impedit perspiciatis molestias dolore! Esse aliquid, magnam nesciunt quos architecto
-                        ratione
-                        nisi!</p></strong>
+                <p class="mt-5"><strong>Sexo:</strong>{{sexo}}</p>
             </div>
             <div class="col-xl-4 border">
-                <p class="mt-5"><strong>Alergias:</strong> Negada</p>
+                <p class="mt-5"><strong>Alergias:</strong>{{alergias}}</p>
+            </div>
+            <div>
+                <p class="mt-5"><b>Diagnostico: </b> {{diagnostico}}</p>
             </div>
             <div class="col-xl-8 border">
-                <p><strong> con 250 tabletas. Tomas una tableta cada 8 horas. Lorem ipsum dolor sit amet
-                        consectetur adipisicing elit. Veniam, tenetur reprehenderit fuga, optio suscipit debitis
-                        voluptatibus
-                        illo autem, impedit perspiciatis molestias dolore! Esse aliquid, magnam nesciunt quos architecto
-                        ratione
-                        nisi!</strong></p>
+                <p class="mt-5"><b>Indicaciones: </b>{{indicacion}} </p>
             </div>
             <div class="col-xl-12 border">
-                <p><strong>Talla:</strong> 170 cm</p>
+                <p><strong>Talla:</strong> {{talla}} </p>
             </div>
             <div class="col-xl-12 border">
-                <p><strong>Temperatura:</strong> 37.5</p>
+                <p><strong>Temperatura:</strong> {{temperatura}}</p>
             </div>
             <div class="col-xl-12 border">
-                <p><strong>T.A:</strong> 110/70</p>
+                <p><strong>T.A:</strong> {{presion}}</p>
             </div>
             <div class="col-xl-12 border text-right">
                 <p><strong>Firma: ______________________</strong></p><br>
             </div>
         </div>
     </div>
+</div>
+<div align = "center">
+    <button ng-click="export()" class="btn btn-lg btn-primary">Crear pdf</button>
 </div>

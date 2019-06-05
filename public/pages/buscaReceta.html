@@ -1,0 +1,22 @@
+<div class="container">
+    <div class="row" ng-if="!mostrar">
+        <div class="col-sm-12" align="center">
+            <h1>Inserte su nombre de usuario para buscar su receta</h1>
+            <form>
+                <label for="usuario">Nombre de usuario</label>
+                <div class="input-group flex-nowrap mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-user"></i></span>
+                    </div>
+                    <input ng-model="nombre" id="nombre" type="text" class="form-control" required>
+                </div>
+                <button class="btn btn-lg btn-primary" ng-click="buscarReceta()" type="submit">Buscar receta</button>
+            </form>
+        </div>
+    </div>
+    <div class="row" ng-if="mostrar">
+        <div class="col-sm-12">
+
+        </div>
+    </div>
+</div>

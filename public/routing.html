@@ -29,7 +29,8 @@
 	<link rel="stylesheet" type="text/css" href="//css/login.css">
 
     <link href="css/style.css" rel="stylesheet">
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
     <script src="./js/routing.js"></script>
@@ -59,12 +60,8 @@
 
             <nav id="nav-menu-container">
                 <ul class="nav-menu">
-<<<<<<< HEAD
                     <li ng-if="privilegio == 2 "><a href="#!HistorialConsultas">Historial de Consultas</a></li>
-                    <li><a href="#!receta">Receta</a></li>
-=======
-                    <li ng-if="privilegio == 2"><a href="#!HistorialConsultas">Historial de Consultas</a></li>
->>>>>>> 0fbefcda6079b7ece70bc205b0fdce4c99d980eb
+                    <li ng-if="privilegio == 2 "><a href="#!receta">Receta</a></li>
                     <!--<li ng-if="privilegio == 0"><a href="#!HistorialConsultasPaciente">Historial de Consultas</a></li>-->
                     <li ng-if="usuario == 'root'"><a href="#!form1" ng-click="ocultar()">Registro Personal</a></li>
                     <li ng-if="privilegio == 2"><a href="#!formPaciente">Registrar consulta</a></li>
@@ -76,6 +73,7 @@
                     <li ng-if="usuario"><a href="#" ng-click="cerrarSesion()">Cerrar Sesion</a></li>
                     <li ng-if="privilegio == 0"><a href="#!videoContactos">Video Consulta</a></li>
                     <li ng-if="privilegio == 2"><a href="#!graficas">Gráficas y<br>Estadísticos</a></li>
+                    <li ng-if="privilegio == 2"><a href="#!recetas">Buscar <br>Recetas</a></li>
                 </ul>
             </nav><!-- #nav-menu-container -->
         </div>

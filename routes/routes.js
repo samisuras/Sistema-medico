@@ -8,6 +8,45 @@ const path = require('path');
 router.get('/',(req,res) => {
     res.sendfile('./public/routing.html');
 });
+router.get('/receta/diagnostico/:paciente', async(req,res) =>{
+    let {paciente} = req.params;
+    var query = "SELECT * FROM receta WHERE paciente = '"+paciente+"'";
+    let resul = await pool.query(query);
+    res.send({
+        indicacion: resul[0].indicacion,
+        diagnostico: resul[0].diagnostico
+    });
+});
+router.get('/datosReceta/paciente/:paciente', async(req,res) => {
+    let {paciente} = req.params;
+    var query = "SELECT * FROM expediente_consulta WHERE nombreUsuario = '"+paciente+"'";
+    let resul = await pool.query(query);
+    res.send({
+        nombre: resul[0].nombreUsuario,
+        edad: resul[0].edad,
+        sexo: resul[0].sexo,
+        fecha: resul[0].fecha,
+        tipoSangre: resul[0].tipoSangre,
+        alergias: resul[0].alergias,
+        malestar: resul[0].malestar,
+        peso: resul[0].peso,
+        talla: resul[0].talla,
+        temperatura: resul[0].temperatura,
+        presion: resul[0].presionArterial,
+        pulso: resul[0].pulsoCardiaco
+    })
+});
+router.get('/datosReceta/medico/:medico', async(req,res) => {
+    let {medico} = req.params;
+
+    var query = "SELECT * FROM medico WHERE nombreUsuario = '"+medico+"'";
+    let resul = await pool.query(query);
+    res.send({
+        cedula: resul[0].cedulaProfesional,
+        especialidad: resul[0].especialidad,
+        medico: medico
+    });
+});
 router.get('/usuarios/sangre', async (req,res) => {
     var query = "SELECT tipoSangre FROM expediente_consulta";
     let resul = await pool.query(query);
@@ -137,6 +176,25 @@ router.get('/notificaciones/:usuario', async (req,res)=>{
             llamada: 1
         });
     }
+});
+router.get('/recetaPdf/:paciente', async(req,res) =>{
+    let {paciente} = req.params;
+    console.log(paciente);
+    var query = "SELECT * FROM receta_pdf WHERE paciente = '"+paciente+"'";
+    let resul = await pool.query(query);
+    if(resul.length > 0)
+        res.send({
+            pdf: resul[0].receta
+        });
+    else
+        res.status(402).send({
+            mensaje: 'No se encontro la receta'
+        });
+});
+router.post('/receta/pdf', async(req,res)=>{
+    let {data,paciente} = req.body;
+    var query = "INSERT INTO receta_pdf (paciente,receta) VALUES ('"+paciente+"','"+data+"')";
+    pool.query(query);
 });
 router.post('/saveVideo', upload.any() ,async (req,res)=>{
     let {video,medico} = req.body;
@@ -296,6 +354,11 @@ router.post('/disponible',async (req,res) => {
     res.send({
         message: 'Todo bien'
     });
+});
+router.post('/recetaMedica', async(req,res)=>{
+    let {paciente,diagnostico,indicacion,medico} = req.body;
+    var query = "INSERT INTO receta (paciente,medico,indicacion,diagnostico) VALUES ('"+paciente+"','"+medico+"','"+indicacion+"','"+diagnostico+"')";
+     pool.query(query);
 });
 router.delete('/notificaciones', async(req,res)=>{
     let {usuario} = req.body;

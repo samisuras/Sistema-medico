@@ -6,9 +6,17 @@ app.config(function ($routeProvider) {
             templateUrl: 'pages/routing.html',
             controller: 'indexController'
         })
+        .when('/recetas', {
+          templateUrl: 'pages/buscaReceta.html',
+          controller: 'buscaRecetaCtrl'
+        })
         .when('/form/recetaMedica', {
           templateUrl: 'pages/formReceta.html',
           controller: 'formRecetaCtrl'
+        })
+        .when('/crearReceta', {
+          templateUrl: 'pages/recetaMedica.html',
+          controller: 'recetaDinamicaCtrl'
         })
         .when('/graficas', {
           templateUrl: 'pages/graficas.html',
@@ -60,8 +68,106 @@ app.config(function ($routeProvider) {
         });
 
 });
+app.controller('buscaRecetaCtrl', function($scope,$http){
+  $scope.mostrar = false;
+  $scope.buscarReceta = function(){
+    var paciente = document.getElementById('nombre').value;
+    alert(paciente);
+    $http.get('/recetaPdf/'+paciente)
+    .then(
+      function(res){
+        var data = res.data.pdf;
+        var docDefinition = {
+            content: [{
+                image: data,
+                width: 500,
+            }]
+        };
+        console.log(data);
+        alert('Receta encontrada\nEl archivo se descargara automaticamente');
+        pdfMake.createPdf(docDefinition).download(paciente+".pdf");
+      },function(res){
+        alert(res.data.mensaje);
+      }
+    )
+  }
+});
+app.controller('recetaDinamicaCtrl', function($scope,$http){
+  $scope.crearReceta = function(){
+    $http.get('/datosReceta/paciente/'+sessionStorage.getItem('pacienteReceta'))
+    .then(
+      function(res){
+        let {nombre,edad,sexo,fecha,tipoSangre,alergias,
+          malestar,talla,temperatura,presion,
+          pulso} = res.data;
+        $scope.nombre = nombre;
+        $scope.fecha = fecha;
+        $scope.edad = edad;
+        $scope.sexo = sexo;
+        $scope.alergias = alergias;
+        $scope.talla = talla;
+        $scope.temperatura = temperatura;
+        $scope.presion = pulso; 
+      });
+    $http.get('datosReceta/medico/'+sessionStorage.getItem('usuario'))
+    .then(
+      function(res){
+        let {cedula,especialidad,medico} = res.data;
+        $scope.cedula = cedula;
+        $scope.especialidad = especialidad;
+        $scope.medico = medico;
+      });
+    $http.get('receta/diagnostico/'+sessionStorage.getItem('pacienteReceta'))
+    .then(
+      function(res){
+        let {indicacion,diagnostico} = res.data;
+        console.log(indicacion,diagnostico);
+        $scope.indicacion = indicacion;
+        $scope.diagnostico = diagnostico;
+      }
+    )
+  }
+  $scope.export = function(){
+    html2canvas(document.getElementById('exportthis'), {
+        onrendered: function (canvas) {
+            //docDefinition enviar a BD para guardar;
+            //DATA
+            var data = canvas.toDataURL();
+            var docDefinition = {
+                content: [{
+                    image: data,
+                    width: 500,
+                }]
+            };
+            var datos = {
+              data: data,
+              paciente: sessionStorage.getItem('pacienteReceta')
+            }
+            console.log(data);
+            $http.post('/receta/pdf',datos);
+            //pdfMake.createPdf(docDefinition).download("test.pdf");
+        }
+    });
+  }
+});
 app.controller('formRecetaCtrl', function($scope,$http) {
-  
+  $scope.paciente = sessionStorage.getItem('pacienteReceta');
+  $scope.crearReceta = function(){
+    var data = {
+      paciente: sessionStorage.getItem('pacienteReceta'),
+      medico: sessionStorage.getItem('usuario'),
+      diagnostico: $scope.diagnostico,
+      indicacion: $scope.indicacion
+    }
+    $http.post('/recetaMedica',data)
+    .then(
+      function(res){
+        window.location.href = '/#!/crearReceta';
+      },function(res){
+        alert('erro');
+      }
+    )
+  }
 });
 app.controller('graficaCtrl', function($scope,$http) {
   Array.prototype.unique=function(a){
