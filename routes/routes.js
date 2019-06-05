@@ -81,7 +81,7 @@ router.get('/datosUsuario/:usuario', async (req,res)=>{
         correo: resul[0].email,
         apellido: resul[0].apellidos,
         usuario: resul[0].nombreUsuario
-    })
+    });
 });
 router.get('/pacienteInfo/:usuario', async (req,res)=>{
     let usuario = req.params.usuario;

@@ -1,0 +1,25 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 m-5 p-5" align="center">
+            <form>
+                <label for="diagnostico">Diagnóstico</label>
+                <div class="input-group flex-nowrap mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-stethoscope"></i></span>
+                    </div>
+                    <input type="text" class="form-control" ng-model="diagnostico" id="diagnostico" placeholder="Escriba aqui el diagnostico..." required>
+                </div>
+                <label for="indicacion">Indicaciones</label>
+                    <div class="input-group flex-nowrap mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-diagnoses"></i></span>
+                        </div>
+                    <textarea ng-model="indicacion" id="indicacion" cols="150" rows="15" placeholder="Escriba aqui las indicaciones..."></textarea>
+                </div>
+                <div class="col-sm-12" align="center">
+                    <button ng-click="registraUsuarioPac()" type="submit" class="btn btn-dark btn-lg mt-3">Crear Receta</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

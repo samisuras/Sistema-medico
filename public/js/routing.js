@@ -6,6 +6,10 @@ app.config(function ($routeProvider) {
             templateUrl: 'pages/routing.html',
             controller: 'indexController'
         })
+        .when('/form/recetaMedica', {
+          templateUrl: 'pages/formReceta.html',
+          controller: 'formRecetaCtrl'
+        })
         .when('/graficas', {
           templateUrl: 'pages/graficas.html',
           controller: 'graficaCtrl'
@@ -51,6 +55,9 @@ app.config(function ($routeProvider) {
             controller: 'notFoundController'
         });
 
+});
+app.controller('formRecetaCtrl', function($scope,$http) {
+  
 });
 app.controller('graficaCtrl', function($scope,$http) {
   Array.prototype.unique=function(a){
@@ -525,6 +532,9 @@ app.controller('formRegistroPacienteController', function($scope, $http){
     }
 });
 app.controller('ConsultasController', function ($scope,$http) {
+    $scope.formReceta = function(paciente){
+      sessionStorage.setItem('pacienteReceta',paciente);
+    }
     $scope.traerInfoConsultas = function(){
         var usuario = {
             usuario: sessionStorage.getItem('usuario')
