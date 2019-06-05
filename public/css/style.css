@@ -1128,3 +1128,8 @@ body.mobile-nav-active #mobile-nav-toggle {
   }
 }
 
+.portada{
+  background: url(../img/fondoreceta.jpg) no-repeat center;
+    text-align: center;
+    
+}

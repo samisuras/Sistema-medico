@@ -42,6 +42,10 @@ app.config(function ($routeProvider) {
             templateUrl: 'pages/HistorialConsultasPaciente.html',
             controller: 'ConsultasPacienteCtrl'
         })
+        .when('/receta',{
+          templateUrl: 'pages/recetaMedica.html',
+          controller: 'ConsultasPacienteCtrl'
+        })
         .otherwise({
             templateUrl: 'pages/routeNotFound.html',
             controller: 'notFoundController'
