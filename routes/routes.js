@@ -89,6 +89,8 @@ router.get('/pacienteInfo/:usuario', async (req,res)=>{
     let resul = await pool.query(query);
     res.send({
         nombre: resul[0].nombreUsuario,
+        edad: resul[0].edad,
+        sexo: resul[0].sexo,
         fecha: resul[0].fecha,
         tipoSangre: resul[0].tipoSangre,
         alergias: resul[0].alergias,
@@ -295,6 +297,11 @@ router.post('/disponible',async (req,res) => {
         message: 'Todo bien'
     });
 });
+router.delete('/notificaciones', async(req,res)=>{
+    let {usuario} = req.body;
+    var query = "DELETE * FROM notificacion WHERE nombreUsuario='"+usuario+"'";
+    pool.query(query);
+});
 //FUNCIONES
 async function usuarioDisponible(req){
     let query = "UPDATE video_chat SET estado = 1 WHERE nombreUsuario = '"+req.body.user+"'";
@@ -340,6 +347,7 @@ async function confirmarLogin(req){
 async function addExConsulta(req){
     try{
         var usuario = req.body.nombre;
+        var {edad,sexo} = req.body;
         var sangre = req.body.sangre;
         var pulso = req.body.pulso;
         var talla = req.body.talla;
@@ -348,8 +356,7 @@ async function addExConsulta(req){
         var peso = req.body.peso;
         var presion = req.body.presion;
         var malestares = req.body.malestares;
-        
-        var query = "INSERT INTO expediente_consulta (nombreUsuario,fecha,tipoSangre,alergias,malestar,peso,talla,temperatura,presionArterial,pulsoCardiaco) VALUES ('"+usuario+"',NOW(),'"+sangre+"','"+alergias+"','"+malestares+"',"+peso+","+talla+","+temperatura+","+presion+","+pulso+");";
+        var query = "INSERT INTO expediente_consulta (nombreUsuario,fecha,tipoSangre,alergias,malestar,peso,talla,temperatura,presionArterial,pulsoCardiaco,edad,sexo) VALUES ('"+usuario+"',NOW(),'"+sangre+"','"+alergias+"','"+malestares+"',"+peso+","+talla+","+temperatura+","+presion+","+pulso+","+edad+",'"+sexo+"');";
         pool.query(query);
     } catch(e){
         console.log(e);

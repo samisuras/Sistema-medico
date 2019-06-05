@@ -279,8 +279,11 @@ app.controller('graficaCtrl', function($scope,$http) {
 });
 app.controller('formPacienteController', function($scope,$http){
     $scope.registrarPaciente = function(){
+        console.log($scope.sexo);
         var data = {
             nombre: $scope.name,
+            edad: $scope.edad,
+            sexo: $scope.sexo,
             sangre: $scope.sangre,
             pulso: $scope.pulso,
             talla: $scope.talla,
@@ -568,6 +571,8 @@ app.controller('ConsultasController', function ($scope,$http) {
             peso: $scope.consulta[idPaciente].peso,
             presion: $scope.consulta[idPaciente].presionArterial,
             malestares: $scope.consulta[idPaciente].malestar,
+            sexo: $scope.consulta[idPaciente].sexo,
+            edad: $scope.consulta[idPaciente].edad
         }]
         $http.get('/datosUsuario/'+$scope.consulta[idPaciente].nombreUsuario)
         .then(
@@ -639,9 +644,11 @@ $scope.iniciar = function(){
     $http.get('/pacienteInfo/'+sessionStorage.getItem('receptor'))
     .then(
     function(response){
-      let {nombre,tipoSangre,alergias,malestar,peso,talla,temperatura,presion,pulso} = response.data;
+      let {nombre,tipoSangre,alergias,malestar,peso,talla,temperatura,presion,pulso,edad,sexo} = response.data;
       document.getElementById('form').hidden = false;
       $scope.name = nombre;
+      $scope.sexo = sexo;
+      $scope.edad = edad;
       $scope.sangre = tipoSangre;
       $scope.pulso = pulso;
       $scope.talla = talla;
@@ -740,6 +747,9 @@ $scope.iniciar = function(){
                 }
                 
                 $scope.terminarLlamada = function(){
+                  let notificacion = {
+                    usuario: sessionStorage.getItem('usuario')
+                  }
                   mediaRecorder.onstop = (ev)=>{
                     var blob = new Blob(chunks, { 'type' : 'video/ogg;' });
                     chunks = [];
@@ -767,8 +777,8 @@ $scope.iniciar = function(){
                       var medico = {
                         usuario: sessionStorage.getItem('usuario')
                       }
-                      $http.post('/borrarNotificacion',medico).then();
-                      //window.location.href = '/';
+                      $http.post('/borrarNotificacion',medico);
+                      window.location.href = '/';
                     },
                     function(response){})
                 };

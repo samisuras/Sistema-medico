@@ -27,6 +27,21 @@
                     <input type="number" class="form-control" ng-model="pulso" id="pulso" placeholder="Pulso Cardiaco"
                         required>
                 </div>
+                <div class="input-group flex-nowrap mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text bg-light" id="addon-wrapping"><i class="fa fa-user"></i></span>
+                    </div>
+                    <input type="number" class="form-control" ng-model="edad" id="edad" placeholder="Edad" min="0" required>
+                </div>
+                <div class="input-group flex-nowrap mb-3">
+                    <div class="mr-2">
+                        <span>Sexo:</span><br>
+                    </div>   
+                    <select ng-model="sexo" name="sexo" id="sexo">
+                        <option value="H">Hombre</option>
+                        <option value="M">Mujer</option>
+                    </select>
+                </div>
             </div>
             <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
                 <div class="input-group flex-nowrap mb-3">
