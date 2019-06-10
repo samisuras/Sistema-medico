@@ -626,6 +626,7 @@ app.controller('loginController', function ($scope,$http) {
     }
 });
 app.controller('formRegistroPacienteController', function($scope, $http){
+    $scope.errContra = false;
     $scope.registraUsuarioPac = function(){
         var data2 = {
             nombre: $scope.nombre,
@@ -634,14 +635,17 @@ app.controller('formRegistroPacienteController', function($scope, $http){
             correo: $scope.correo,
             contra: $scope.contrasena
         };
-        $http.post('/addUserPac',data2)
-        .then(function(response){
-                alert(response.data.message);
-            },
-            function(response){
-                $scope.error = true;
-                $scope.mensajeError = response.data.message;
-        });
+        if($scope.contrasena != $scope.contrasena2)
+          $scope.errContra = true;
+        if(!$scope.errContra)
+          $http.post('/addUserPac',data2)
+          .then(function(response){
+                  alert(response.data.message);
+              },
+              function(response){
+                  $scope.error = true;
+                  $scope.mensajeError = response.data.message;
+          });
     }
 });
 app.controller('ConsultasController', function ($scope,$http) {
@@ -806,7 +810,6 @@ $scope.iniciar = function(){
                       id: datos,
                       usuario: sessionStorage.getItem('usuario')
                     };
-                    
                     $http.post('/crearTexto',chat).then();
                   }else{
                     var chat = {

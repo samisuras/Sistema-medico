@@ -60,8 +60,7 @@
 
             <nav id="nav-menu-container">
                 <ul class="nav-menu">
-                    <li ng-if="privilegio == 2 "><a href="#!HistorialConsultas">Historial de Consultas</a></li>
-                    <li ng-if="privilegio == 2 "><a href="#!receta">Receta</a></li>
+                    <li ng-if="privilegio == 2 "><a href="#!HistorialConsultas">Historial de <br> Consultas</a></li>
                     <!--<li ng-if="privilegio == 0"><a href="#!HistorialConsultasPaciente">Historial de Consultas</a></li>-->
                     <li ng-if="usuario == 'root'"><a href="#!form1" ng-click="ocultar()">Registro Personal</a></li>
                     <li ng-if="privilegio == 2"><a href="#!formPaciente">Registrar consulta</a></li>
@@ -73,7 +72,7 @@
                     <li ng-if="usuario"><a href="#" ng-click="cerrarSesion()">Cerrar Sesion</a></li>
                     <li ng-if="privilegio == 0"><a href="#!videoContactos">Video Consulta</a></li>
                     <li ng-if="privilegio == 2"><a href="#!graficas">Gráficas y<br>Estadísticos</a></li>
-                    <li ng-if="privilegio == 2"><a href="#!recetas">Buscar <br>Recetas</a></li>
+                    <li ng-if="privilegio == 2"><a href="#!recetas">Buscar <br>Receta</a></li>
                 </ul>
             </nav><!-- #nav-menu-container -->
         </div>

@@ -44,14 +44,14 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-key"></i></span>
                             </div>
-                            <input type="password" class="form-control" ng-model="contrasena" id="contrasena" placeholder="*******" required>
+                            <input type="password" class="form-control" ng-model="contrasena" id="contrasena" placeholder="*******" required> <span ng-if="errContra" class="bg-danger">Error las contraseñas no coinciden</span>
                         </div>
                         <label for="contrasena">Repita la contraseña</label>
                         <div class="input-group flex-nowrap mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-key"></i></span>
                             </div>
-                            <input type="password" class="form-control"  id="contrasena2" placeholder="*******" required>
+                            <input type="password" ng-model="contrasena2" class="form-control"  id="contrasena2" placeholder="*******" required><span ng-if="errContra" class="bg-danger">Error las contraseñas no coinciden</span>
                         </div>
                     </div>
                     <div class="col-sm-12" align="center">

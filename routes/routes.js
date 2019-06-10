@@ -184,7 +184,7 @@ router.get('/recetaPdf/:paciente', async(req,res) =>{
     let resul = await pool.query(query);
     if(resul.length > 0)
         res.send({
-            pdf: resul[0].receta
+            pdf: resul[resul.length-1].receta
         });
     else
         res.status(402).send({
@@ -194,10 +194,11 @@ router.get('/recetaPdf/:paciente', async(req,res) =>{
 router.post('/receta/pdf', async(req,res)=>{
     let {data,paciente} = req.body;
     var query = "INSERT INTO receta_pdf (paciente,receta) VALUES ('"+paciente+"','"+data+"')";
-    pool.query(query);
+    await pool.query(query);
 });
-router.post('/saveVideo', upload.any() ,async (req,res)=>{
+router.post('/saveVideo', async (req,res)=>{
     let {video,medico} = req.body;
+    console.log(medico);
     const fs = require('fs');
     var dir = './db/video/'+medico;
     if(!fs.existsSync(dir)){
@@ -249,7 +250,10 @@ router.post('/desconectarUser', async (req,res)=>{
 router.post('/crearTexto', async (req,res)=>{
     const fs = require('fs');
     var cadena = req.body.id;
-    fs.writeFileSync("./db/"+req.body.usuario+".txt",cadena);
+    console.log('crear ' + req.body.usuario);
+    try{
+        fs.writeFileSync("./db/"+req.body.usuario+".txt",cadena);
+    }catch(e){console.log(e)}
     res.send({
         message: 'Todo bien'
     });
@@ -257,7 +261,11 @@ router.post('/crearTexto', async (req,res)=>{
 router.post('/leerArchivo', async (req,res)=>{
     const fs = require('fs');
     var usuario = req.body.usuario;
-    let data = fs.readFileSync("./db/"+usuario+".txt");
+    console.log('leer '+usuario);
+    let data
+    try{
+        data = fs.readFileSync("./db/"+usuario+".txt");
+    }catch(e){console.log(e)}
     texto = data.toString();
     res.send({
         clave: texto
@@ -357,13 +365,17 @@ router.post('/disponible',async (req,res) => {
 });
 router.post('/recetaMedica', async(req,res)=>{
     let {paciente,diagnostico,indicacion,medico} = req.body;
+    console.log(diagnostico,indicacion)
     var query = "INSERT INTO receta (paciente,medico,indicacion,diagnostico) VALUES ('"+paciente+"','"+medico+"','"+indicacion+"','"+diagnostico+"')";
-     pool.query(query);
+    await pool.query(query);
+    res.send({
+        message: 'todo bien morro'
+    })
 });
 router.delete('/notificaciones', async(req,res)=>{
     let {usuario} = req.body;
     var query = "DELETE * FROM notificacion WHERE nombreUsuario='"+usuario+"'";
-    pool.query(query);
+    await pool.query(query);
 });
 //FUNCIONES
 async function usuarioDisponible(req){
