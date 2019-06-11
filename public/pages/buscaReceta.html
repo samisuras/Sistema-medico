@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" ng-init="buscarPacientes()">
     <div class="row" ng-if="!mostrar">
         <div class="col-sm-12" align="center">
             <h1>Inserte su nombre de usuario para buscar su receta</h1>
@@ -8,15 +8,31 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text bg-light" id="addon-wrapping"><i class="fas fa-user"></i></span>
                     </div>
-                    <input ng-model="nombre" id="nombre" type="text" class="form-control" required>
+                    <select ng-repeat="paciente in pacientes" name="pacientes" id="nombre">
+                        <option value="{{paciente}}">{{paciente}}</option>
+                    </select>
                 </div>
                 <button class="btn btn-lg btn-primary" ng-click="buscarReceta()" type="submit">Buscar receta</button>
             </form>
         </div>
     </div>
-    <div class="row" ng-if="mostrar">
-        <div class="col-sm-12">
-
-        </div>
+    <div ng-if="mostrar" align="center">
+        <h3>Receta(s) del paciente</h3>
+        <table class="table table-hover table-striped table-bordered text-center">
+            <thead>
+                <tr class="bg-info text-white">
+                    <th>Medico</th>
+                    <th>Diagnostico</th>
+                    <th>Receta</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="receta in recetas">
+                    <td>{{receta.medico}}</td>
+                    <td>{{receta.diagnostico}}</td>
+                    <td> <button ng-click="descargarReceta($index)" class="btn btn-primary btn-lg">Descargar receta</button> </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>

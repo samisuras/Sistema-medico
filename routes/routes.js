@@ -8,14 +8,38 @@ const path = require('path');
 router.get('/',(req,res) => {
     res.sendfile('./public/routing.html');
 });
+router.get('/receta/pacientes/', async(req,res)=>{
+    Array.prototype.unique=function(a){
+        return function(){return this.filter(a)}}(function(a,b,c){return c.indexOf(a,b+1)<0
+      });
+    var query = "SELECT * FROM receta";
+    let resul = await pool.query(query);
+    let pacientes = [];
+    resul.forEach((e)=>{
+        pacientes.push(e.paciente);
+    });
+    pacientes = pacientes.unique();
+    res.send({
+        pacientes: pacientes
+    })
+});
 router.get('/receta/diagnostico/:paciente', async(req,res) =>{
     let {paciente} = req.params;
-    var query = "SELECT * FROM receta WHERE paciente = '"+paciente+"'";
-    let resul = await pool.query(query);
-    res.send({
-        indicacion: resul[0].indicacion,
-        diagnostico: resul[0].diagnostico
-    });
+    setTimeout(async () => {
+        var query = "SELECT * FROM receta WHERE paciente = '"+paciente+"'";
+        let resul = await pool.query(query);
+        let index = 0;
+        if((resul.length-1)<0 || resul.length == 0){
+            index = 0;
+        }else{
+            index = resul.length-1;
+        }
+        res.send({
+            indicacion: resul[index].indicacion,
+            diagnostico: resul[index].diagnostico
+        });
+    }, 1000); 
+    
 });
 router.get('/datosReceta/paciente/:paciente', async(req,res) => {
     let {paciente} = req.params;
@@ -179,17 +203,24 @@ router.get('/notificaciones/:usuario', async (req,res)=>{
 });
 router.get('/recetaPdf/:paciente', async(req,res) =>{
     let {paciente} = req.params;
-    console.log(paciente);
-    var query = "SELECT * FROM receta_pdf WHERE paciente = '"+paciente+"'";
+    var query = "SELECT * FROM receta WHERE paciente = '"+paciente+"'";
     let resul = await pool.query(query);
     if(resul.length > 0)
         res.send({
-            pdf: resul[resul.length-1].receta
+            recetas: resul
         });
     else
         res.status(402).send({
             mensaje: 'No se encontro la receta'
         });
+});
+router.get('/receta/:index/:paciente', async(req,res)=>{
+    let {index,paciente} = req.params;
+    var query = "SELECT receta FROM receta_pdf WHERE paciente = '"+paciente+"'";
+    let resul = await pool.query(query);
+    res.send({
+        receta: resul[index].receta
+    })
 });
 router.post('/receta/pdf', async(req,res)=>{
     let {data,paciente} = req.body;
@@ -198,7 +229,6 @@ router.post('/receta/pdf', async(req,res)=>{
 });
 router.post('/saveVideo', async (req,res)=>{
     let {video,medico} = req.body;
-    console.log(medico);
     const fs = require('fs');
     var dir = './db/video/'+medico;
     if(!fs.existsSync(dir)){
@@ -250,10 +280,9 @@ router.post('/desconectarUser', async (req,res)=>{
 router.post('/crearTexto', async (req,res)=>{
     const fs = require('fs');
     var cadena = req.body.id;
-    console.log('crear ' + req.body.usuario);
     try{
         fs.writeFileSync("./db/"+req.body.usuario+".txt",cadena);
-    }catch(e){console.log(e)}
+    }catch(e){}
     res.send({
         message: 'Todo bien'
     });
@@ -261,7 +290,6 @@ router.post('/crearTexto', async (req,res)=>{
 router.post('/leerArchivo', async (req,res)=>{
     const fs = require('fs');
     var usuario = req.body.usuario;
-    console.log('leer '+usuario);
     let data
     try{
         data = fs.readFileSync("./db/"+usuario+".txt");
@@ -365,7 +393,6 @@ router.post('/disponible',async (req,res) => {
 });
 router.post('/recetaMedica', async(req,res)=>{
     let {paciente,diagnostico,indicacion,medico} = req.body;
-    console.log(diagnostico,indicacion)
     var query = "INSERT INTO receta (paciente,medico,indicacion,diagnostico) VALUES ('"+paciente+"','"+medico+"','"+indicacion+"','"+diagnostico+"')";
     await pool.query(query);
     res.send({
@@ -381,7 +408,6 @@ router.delete('/notificaciones', async(req,res)=>{
 async function usuarioDisponible(req){
     let query = "UPDATE video_chat SET estado = 1 WHERE nombreUsuario = '"+req.body.user+"'";
     let existe = await pool.query(query);
-    console.log(existe);
     if(existe.affectedRows == 0)
     {
         let query = "INSERT INTO video_chat (nombreUsuario,estado) VALUES('"+req.body.user+"',1)";
@@ -444,13 +470,11 @@ async function addUser(req,res)
         var existeUs = await existeUsuario(req);
         if(existeUs === true)
         {
-            console.log('El usuario ya ha sido registrado');
             return true;
         }
         var existeCor= await existeCorreo(req); 
         if(existeCor === true)
         {
-            console.log('El correo ya ha sido registrado');
             return true;
         }else{
             await agregarUsuario(req);
