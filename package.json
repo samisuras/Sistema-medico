@@ -14,7 +14,7 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "browserify": "^16.2.3",
-    "express": "^4.17.0",
+    "express": "^4.17.3",
     "getusermedia": "^2.0.1",
     "html-pdf": "^2.2.0",
     "multer": "^1.4.1",
